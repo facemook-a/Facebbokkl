@@ -1,0 +1,30 @@
+name: Spark license security
+on:
+  push:
+    branches: [usa-favor-vpn, spark-rules-validation]
+    paths:
+      - 'USA-FAVOR-VPN/Firebase-Backend/**'
+      - '.github/workflows/spark-license-tests.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  firestore-rules:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: USA-FAVOR-VPN/Firebase-Backend/rules-tests/package-lock.json
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - run: npm ci --ignore-scripts --no-fund --no-audit
+        working-directory: USA-FAVOR-VPN/Firebase-Backend/rules-tests
+      - name: Real Firestore transactions and authorization rules
+        run: ./rules-tests/node_modules/.bin/firebase emulators:exec --project demo-usa-favor --only firestore "npm test --prefix rules-tests"
+        working-directory: USA-FAVOR-VPN/Firebase-Backend

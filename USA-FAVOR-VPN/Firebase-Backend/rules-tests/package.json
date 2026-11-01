@@ -1,0 +1,1 @@
+{"name":"usa-favor-spark-rules-tests","private":true,"engines":{"node":">=24.12.0"},"scripts":{"test":"node --test --test-concurrency=1 spark.test.cjs"},"devDependencies":{"@firebase/rules-unit-testing":"6.0.0","firebase":"13.1.0","firebase-tools":"15.34.2"}}
