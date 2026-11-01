@@ -9,3 +9,5 @@ The active path is Spark rules plus a trusted owned gateway. See VERIFICATION.md
 - Package: inspect version/package/native ABI, verify APK signatures, compare old/new debug signing certificate and scan APK entries for unbundled profile/private-key resources.
 
 Legacy functions/ tests remain for reference but are not the active Spark runtime. Their old npm audit belongs to that unused source tree. Real project Auth/rules deployment, App Check attestation, physical-device behaviors, production signing and live tunnel/leak/revocation acceptance remain external checks in FIREBASE.md and GATEWAY.md.
+
+Full app-screen previews: `./gradlew -PvisualReview=true :Admin-App:recordPaparazziDebug :Client-App:recordPaparazziDebug`. Seven renders passed (4 Admin, 3 Client); screenshots and exact scope are in Screenshots/README.md. Tests supply empty state through a test-only mocked ViewModel and ActivityResultRegistry. Runtime application Kotlin and existing APKs are unchanged.

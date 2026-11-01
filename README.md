@@ -8,6 +8,7 @@ Version **1.1.0-spark**: two native Android apps with free Firestore licensing, 
 - [Complete source ZIP with matching Firebase Android registrations](USA-FAVOR-VPN/Downloads/USA-FAVOR-VPN-source.zip)
 - [Free setup — شرح بالدارجة خطوة بخطوة](USA-FAVOR-VPN/Documentation/FREE-SETUP.md)
 - [Source and deployment documentation](USA-FAVOR-VPN/README.md)
+- [Actual native screen previews](USA-FAVOR-VPN/Documentation/Screenshots/README.md)
 - [Actual verification results](USA-FAVOR-VPN/Documentation/VERIFICATION.md)
 - [SHA-256 checksums](USA-FAVOR-VPN/Downloads/SHA256SUMS.txt)
 

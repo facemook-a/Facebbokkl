@@ -1,4 +1,5 @@
 plugins { id("com.android.application"); id("org.jetbrains.kotlin.android"); id("org.jetbrains.kotlin.plugin.compose") }
+if (providers.gradleProperty("visualReview").orNull == "true") apply(plugin="app.cash.paparazzi")
 if (file("google-services.json").exists()) apply(plugin="com.google.gms.google-services")
 android {
  ndkVersion="28.0.13004108"
@@ -30,3 +31,10 @@ val validateProduction by tasks.registering {
  }
 }
 tasks.matching { it.name=="preReleaseBuild" }.configureEach { dependsOn(validateProduction) }
+
+// Test-only rendering of the production composables; not packaged into APKs.
+dependencies {
+ testImplementation("app.cash.paparazzi:paparazzi:1.3.5")
+ testImplementation("junit:junit:4.13.2")
+ testImplementation("org.mockito:mockito-core:5.18.0")
+}

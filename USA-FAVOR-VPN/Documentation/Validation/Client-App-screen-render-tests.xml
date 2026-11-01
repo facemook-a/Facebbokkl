@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.usafavor.client.AppScreenReviewTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-01T12:50:43.051Z" hostname="67b569debdf4" time="5.264">
+  <properties/>
+  <testcase name="splash" classname="com.usafavor.client.AppScreenReviewTest" time="4.305"/>
+  <testcase name="homeWithoutPublishedGateway" classname="com.usafavor.client.AppScreenReviewTest" time="0.493"/>
+  <testcase name="activation" classname="com.usafavor.client.AppScreenReviewTest" time="0.465"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[WARNING: A Java agent has been loaded dynamically (/workspace/toolchains/gradle-home/caches/8.13/transforms/8a2327daf4aa090c7aef53a7faee1f64/transformed/byte-buddy-agent-1.17.5.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+Nov 01, 2026 12:50:46 PM app.cash.paparazzi.internal.PaparazziLogger logAndroidFramework
+INFO: Settings [3]: Can't get key animator_duration_scale from content://settings/global
+Nov 01, 2026 12:50:47 PM app.cash.paparazzi.internal.PaparazziLogger logAndroidFramework
+INFO: Settings [3]: Can't get key animator_duration_scale from content://settings/global
+Nov 01, 2026 12:50:47 PM app.cash.paparazzi.internal.PaparazziLogger logAndroidFramework
+INFO: Settings [3]: Can't get key animator_duration_scale from content://settings/global
+]]></system-err>
+</testsuite>

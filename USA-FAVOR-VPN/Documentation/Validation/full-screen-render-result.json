@@ -1,0 +1,14 @@
+{
+  "Admin-App": {
+    "tests": "4",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  "Client-App": {
+    "tests": "3",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  }
+}
