@@ -1,0 +1,10 @@
+{
+  "runner": "GitHub Actions official Firestore Emulator",
+  "url": "https://github.com/facemook-a/Facebbokkl/actions/runs/41288670814",
+  "source_commit": "0d1101e",
+  "rules_sha256": "99cbf011e050931689aa66b9f8e483f127374f822539c40e04a74ce88783c106",
+  "tests": 16,
+  "pass": 16,
+  "fail": 0,
+  "evidence": "Public successful run and test-count annotation inspected; full log is the read-only workflow artifact. Local emulator download remains blocked."
+}

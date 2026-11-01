@@ -6,7 +6,7 @@ import android.security.keystore.KeyProperties
 import android.util.Base64
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.functions.FirebaseFunctions
+import com.google.firebase.firestore.ListenerRegistration
 import kotlinx.coroutines.tasks.await
 import java.security.KeyStore
 import javax.crypto.Cipher
@@ -18,10 +18,15 @@ class Backend(private val context: Context) {
     val configured get() = FirebaseApp.getApps(context).isNotEmpty()
     val auth get() = FirebaseAuth.getInstance()
     suspend fun anonymous() { require(configured) { "Add the matching Firebase registration and rebuild. See Documentation/FIREBASE.md." }; if (auth.currentUser==null) auth.signInAnonymously().await() }
-    suspend fun login(email:String,password:String) { require(configured) { "Firebase configuration missing for this application package" }; auth.signInWithEmailAndPassword(email,password).await(); val token=auth.currentUser!!.getIdToken(true).await(); if(token.claims["admin"]!=true) { auth.signOut(); error("This account is not an authorized administrator") } }
+    suspend fun login(email:String,password:String) { require(configured) { "Firebase configuration missing for this application package" }; require(email.isNotBlank()&&password.isNotEmpty()) { "Enter your email and password." }; auth.signInWithEmailAndPassword(email.trim(),password).await(); val token=auth.currentUser!!.getIdToken(true).await(); if(token.claims["admin"]!=true) { auth.signOut(); error("This account is not an authorized administrator") } }
     suspend fun reset(email:String) { require(configured) { "Firebase configuration missing" }; auth.sendPasswordResetEmail(email).await() }
-    @Suppress("UNCHECKED_CAST")
-    suspend fun call(name:String,data:Map<String,Any?> = emptyMap()):Map<String,Any?> { require(configured) { "Firebase configuration missing" }; return FirebaseFunctions.getInstance("us-central1").getHttpsCallable(name).call(data).await().data as? Map<String,Any?> ?: emptyMap() }
+    private val spark by lazy { SparkBackend(context,auth) }
+    suspend fun call(name:String,data:Map<String,Any?> = emptyMap()):Map<String,Any?> {
+        require(configured) { "Firebase configuration missing" }
+        return spark.call(name,data)
+    }
+    fun watchLicense(onInvalid:(String)->Unit):ListenerRegistration = spark.watchLicense(onInvalid)
+
 }
 /** Metadata only. Authorization always goes through backend + gateway. */
 class SecureStore(context:Context) {
@@ -36,7 +41,7 @@ class SecureStore(context:Context) {
     fun tipsDismissed()=prefs.getBoolean("tips",false)
     fun dismissTips(){prefs.edit().putBoolean("tips",true).apply()}
 }
-const val DEFAULT_TIPS="إذا كنت ترغب في استكشاف محتوى أمريكي في تطبيقات مثل TikTok وInstagram وYouTube، اتصل بخادم الولايات المتحدة ثم أعد تشغيل التطبيق المستهدف. يمكن أن يساعد مسح ذاكرة التخزين المؤقت أحياناً على تحديث الاقتراحات. لكن VPN لا يضمن ظهور محتوى أمريكي، لأن المنصات تعتمد أيضاً على الحساب واللغة والموقع وسجل التفاعل. انتبه أن مسح جميع بيانات التطبيق قد يؤدي إلى تسجيل خروجك أو فقدان بيانات محفوظة محلياً."
+const val DEFAULT_TIPS="To explore US content in apps such as TikTok, Instagram and YouTube, connect to a US server and then restart the app you want to use. Clearing the cache can sometimes refresh recommendations. A VPN does not guarantee US content: platforms also consider your account, language, location and activity history. Clearing all app data may sign you out or remove locally saved information. This app never clears another app's data automatically."
 fun date(value:Any?):String = (value as? Number)?.toLong()?.let{java.text.DateFormat.getDateTimeInstance(java.text.DateFormat.MEDIUM,java.text.DateFormat.SHORT).format(java.util.Date(it))} ?: "Not activated"
 @Suppress("UNCHECKED_CAST") fun Any?.obj() = this as? Map<String,Any?> ?: emptyMap()
 @Suppress("UNCHECKED_CAST") fun Any?.rows() = (this as? List<*>)?.map{it.obj()} ?: emptyList()

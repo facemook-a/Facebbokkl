@@ -1,0 +1,39 @@
+
+> Configure project :Admin-App
+WARNING: BuildType 'debug' is both debuggable and has 'isMinifyEnabled' set to true.
+All code optimizations and obfuscation are disabled for debuggable builds.
+
+> Configure project :Client-App
+WARNING: BuildType 'debug' is both debuggable and has 'isMinifyEnabled' set to true.
+All code optimizations and obfuscation are disabled for debuggable builds.
+
+> Task :Shared:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :Shared:preBuild UP-TO-DATE
+> Task :Shared:preDebugBuild UP-TO-DATE
+> Task :Shared:generateDebugResValues UP-TO-DATE
+> Task :Shared:generateDebugResources UP-TO-DATE
+> Task :Shared:packageDebugResources UP-TO-DATE
+> Task :Shared:parseDebugLocalResources UP-TO-DATE
+> Task :Shared:generateDebugRFile UP-TO-DATE
+> Task :Shared:compileDebugKotlin UP-TO-DATE
+> Task :Shared:javaPreCompileDebug UP-TO-DATE
+> Task :Shared:compileDebugJavaWithJavac NO-SOURCE
+> Task :Shared:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :Shared:preDebugUnitTestBuild UP-TO-DATE
+> Task :Shared:preparePaparazziDebugResources UP-TO-DATE
+> Task :Shared:processDebugJavaRes UP-TO-DATE
+> Task :Shared:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :Shared:javaPreCompileDebugUnitTest UP-TO-DATE
+> Task :Shared:generateDebugUnitTestStubRFile
+> Task :Shared:compileDebugUnitTestKotlin
+> Task :Shared:processDebugUnitTestJavaRes UP-TO-DATE
+> Task :Shared:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :Shared:transformDebugUnitTestClassesWithAsm
+
+> Task :Shared:testDebugUnitTest
+See the Paparazzi report at: file:///workspace/Facebbokkl/USA-FAVOR-VPN/Shared/build/reports/paparazzi/debug/index.html
+
+> Task :Shared:recordPaparazziDebug
+
+BUILD SUCCESSFUL in 11s
+17 actionable tasks: 4 executed, 13 up-to-date

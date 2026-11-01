@@ -1,8 +1,14 @@
 test_bad_sessions_fail_closed (test_agent.Tests.test_bad_sessions_fail_closed) ... ok
 test_management_metrics (test_agent.Tests.test_management_metrics) ... ok
 test_unreachable_backend_denies (test_agent.Tests.test_unreachable_backend_denies) ... ok
+test_cached_session_cannot_outlive_expiry_or_accept_different_token (test_firebase_store.FirebaseAuthorizationTests.test_cached_session_cannot_outlive_expiry_or_accept_different_token) ... ok
+test_database_failure_denies_instead_of_faking_authorization (test_firebase_store.FirebaseAuthorizationTests.test_database_failure_denies_instead_of_faking_authorization) ... ok
+test_generation_and_first_activation_use_different_anchors (test_firebase_store.FirebaseAuthorizationTests.test_generation_and_first_activation_use_different_anchors) ... ok
+test_license_is_bound_to_one_identity (test_firebase_store.FirebaseAuthorizationTests.test_license_is_bound_to_one_identity) ... ok
+test_missing_activation_or_unknown_schema_cannot_connect (test_firebase_store.FirebaseAuthorizationTests.test_missing_activation_or_unknown_schema_cannot_connect) ... ok
+test_revocation_and_expiration_are_independent_of_ui (test_firebase_store.FirebaseAuthorizationTests.test_revocation_and_expiration_are_independent_of_ui) ... ok
 
 ----------------------------------------------------------------------
-Ran 3 tests in 0.001s
+Ran 9 tests in 0.001s
 
 OK

@@ -13,11 +13,13 @@ from agent import validate
 validate(json.load(open('/etc/usa-favor/gateway.json')))
 PY
 apt-get update
-DEBIAN_FRONTEND=noninteractive apt-get install -y openvpn easy-rsa nginx certbot python3-certbot-nginx nftables
+DEBIAN_FRONTEND=noninteractive apt-get install -y openvpn easy-rsa nginx certbot python3-certbot-nginx nftables python3-venv
 install -d -m 700 /etc/usa-favor /etc/openvpn/server /var/lib/usa-favor
 install -m 600 /etc/usa-favor/gateway.json /var/lib/usa-favor/deployed.json
 install -d -m 755 /usr/local/lib/usa-favor
-install -m 755 agent.py auth-hook.py /usr/local/lib/usa-favor/
+install -m 755 agent.py auth-hook.py firebase_store.py /usr/local/lib/usa-favor/
+python3 -m venv /opt/usa-favor-venv
+/opt/usa-favor-venv/bin/pip install --require-virtualenv "firebase-admin==7.1.0"
 if [[ ! -f /etc/openvpn/server/server.key ]]; then
  [[ -d /var/lib/usa-favor/pki-work ]] || make-cadir /var/lib/usa-favor/pki-work
  cd /var/lib/usa-favor/pki-work
@@ -109,7 +111,8 @@ Description=USA Favor gateway management and authorization
 After=network-online.target
 Wants=network-online.target
 [Service]
-ExecStart=/usr/bin/python3 /usr/local/lib/usa-favor/agent.py
+ExecStart=/opt/usa-favor-venv/bin/python /usr/local/lib/usa-favor/agent.py
+Environment=GOOGLE_APPLICATION_CREDENTIALS=/etc/usa-favor/service-account.json
 Restart=on-failure
 RuntimeDirectory=usa-favor
 RuntimeDirectoryMode=0755
@@ -138,11 +141,12 @@ server {
  listen 80;
  server_name $HOST;
  client_max_body_size 8k;
- location /control/ { proxy_pass http://127.0.0.1:9080; proxy_read_timeout 15s; }
+ location /control/ { proxy_pass http://127.0.0.1:9080; proxy_read_timeout 60s; }
+ location /client/ { proxy_pass http://127.0.0.1:9080; proxy_read_timeout 60s; }
  location / { return 404; }
 }
 NGINX
 ln -sf /etc/nginx/sites-available/usa-favor /etc/nginx/sites-enabled/usa-favor
 nginx -t
 systemctl reload nginx
-printf '\nFinish HTTPS: certbot --nginx -d %s --redirect\nAllow TCP 443 and configured VPN port in provider firewall. Management is never usable without its random key.\n' "$HOST"
+printf '\nFinish HTTPS: certbot --nginx -d %s --redirect\nAllow TCP 443 and configured VPN port in provider firewall. Management requires a verified administrator Firebase identity or the root-only control key.\n' "$HOST"

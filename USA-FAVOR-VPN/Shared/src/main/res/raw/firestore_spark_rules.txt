@@ -1,0 +1,106 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signed() { return request.auth != null; }
+    function admin() { return signed() && ('admin' in request.auth.token) && request.auth.token.admin == true; }
+    function expiryOk(l) {
+      return l.expires_at is timestamp
+        ? request.time < l.expires_at
+        : ((l.activation_policy == 'first_activation' && l.activated_at == null)
+          || request.time < (l.activation_policy == 'generation' ? l.created_at : l.activated_at)
+            + duration.value(l.duration_days, 'd'));
+    }
+    function usable(l) { return l.schema_version == 3 && l.is_active == true && l.status != 'revoked' && expiryOk(l); }
+    function boundActive() {
+      let b = /databases/$(database)/documents/bindings/$(request.auth.uid);
+      return signed() && exists(b)
+        && exists(/databases/$(database)/documents/licenses/$(get(b).data.license_id))
+        && get(/databases/$(database)/documents/licenses/$(get(b).data.license_id)).data.device_binding_id == request.auth.uid
+        && usable(get(/databases/$(database)/documents/licenses/$(get(b).data.license_id)).data);
+    }
+    function validLicenseCreate(l) {
+      return l.keys().hasOnly(['schema_version','code','is_active','status','created_at','created_by','activated_at','expires_at','duration_days','activation_policy','device_binding_id','revoked_at','updated_at'])
+        && l.schema_version == 3 && l.code is string && l.code.matches('USA-[A-Z2-9]{4}-[A-Z2-9]{4}')
+        && l.created_by == request.auth.uid && l.created_at == request.time && l.updated_at == request.time
+        && l.duration_days is int && l.duration_days >= 1 && l.duration_days <= 3650
+        && l.activation_policy in ['generation','first_activation']
+        && l.is_active == true && l.status == 'unused' && l.device_binding_id == null
+        && l.activated_at == null && l.expires_at == null && l.revoked_at == null;
+    }
+    match /licenses/{id} {
+      // No inventory enumeration. A code holder may look up an unbound code; only its owner may read it afterwards.
+      allow list: if admin();
+      allow get: if admin() || (signed() && (!exists(/databases/$(database)/documents/licenses/$(id))
+        || resource.data.device_binding_id == null || resource.data.device_binding_id == request.auth.uid));
+      allow create: if admin() && id.matches('[a-f0-9]{64}') && validLicenseCreate(request.resource.data);
+      allow delete: if admin();
+      allow update: if admin() || (signed() && usable(resource.data)
+        && resource.data.device_binding_id == null
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['device_binding_id','activated_at','updated_at','status'])
+        && request.resource.data.device_binding_id == request.auth.uid
+        && request.resource.data.status == 'active' && request.resource.data.updated_at == request.time
+        && request.resource.data.activated_at == (resource.data.activated_at == null ? request.time : resource.data.activated_at)
+        && getAfter(/databases/$(database)/documents/bindings/$(request.auth.uid)).data.license_id == id);
+    }
+    match /bindings/{uid} {
+      allow get: if admin() || (signed() && request.auth.uid == uid);
+      allow list, delete: if admin();
+      allow create, update: if admin() || (signed() && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['license_id','updated_at'])
+        && request.resource.data.license_id is string && request.resource.data.license_id.matches('[a-f0-9]{64}')
+        && request.resource.data.updated_at == request.time
+        && getAfter(/databases/$(database)/documents/licenses/$(request.resource.data.license_id)).data.device_binding_id == uid
+        && usable(getAfter(/databases/$(database)/documents/licenses/$(request.resource.data.license_id)).data)
+        && (!exists(/databases/$(database)/documents/bindings/$(uid))
+          || resource.data.license_id == request.resource.data.license_id
+          || !exists(/databases/$(database)/documents/licenses/$(resource.data.license_id))
+          || !usable(get(/databases/$(database)/documents/licenses/$(resource.data.license_id)).data)));
+    }
+    match /device_conflicts/{attempt} {
+      allow list: if admin();
+      allow get: if admin() || (signed() && (!exists(/databases/$(database)/documents/device_conflicts/$(attempt)) || resource.data.uid == request.auth.uid));
+      allow create: if signed() && request.resource.data.keys().hasOnly(['license_id','uid','device_model','kind','attempted_at'])
+        && request.resource.data.uid == request.auth.uid
+        && attempt == request.auth.uid + '_' + request.resource.data.license_id
+        && request.resource.data.license_id.matches('[a-f0-9]{64}')
+        && request.resource.data.device_model is string && request.resource.data.device_model.size() <= 120
+        && request.resource.data.kind == 'other_installation' && request.resource.data.attempted_at == request.time
+        && exists(/databases/$(database)/documents/licenses/$(request.resource.data.license_id))
+        && get(/databases/$(database)/documents/licenses/$(request.resource.data.license_id)).data.device_binding_id != null
+        && get(/databases/$(database)/documents/licenses/$(request.resource.data.license_id)).data.device_binding_id != request.auth.uid;
+      // Immutable conflict evidence. Admin deletion does not automatically revoke a customer's license.
+      allow update: if false;
+      allow delete: if admin();
+    }
+    match /device_sessions/{uid} {
+      allow get: if admin() || (signed() && request.auth.uid == uid);
+      allow list, delete: if admin();
+      allow create, update: if signed() && request.auth.uid == uid && boundActive()
+        && request.resource.data.keys().hasOnly(['uid','license_id','device_model','created_at','last_seen'])
+        && request.resource.data.uid == uid
+        && request.resource.data.license_id == get(/databases/$(database)/documents/bindings/$(uid)).data.license_id
+        && request.resource.data.device_model is string && request.resource.data.device_model.size() <= 120
+        && request.resource.data.last_seen == request.time
+        && request.resource.data.created_at == (exists(/databases/$(database)/documents/device_sessions/$(uid)) ? resource.data.created_at : request.time);
+    }
+    match /sessions/{id} {
+      allow list: if admin();
+      allow get: if admin() || (signed() && resource.data.uid == request.auth.uid);
+      // Session credentials can be provisioned only by the trusted gateway Admin SDK, never Android clients.
+      allow create, delete: if false;
+      allow update: if admin() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['revoked']) && request.resource.data.revoked == true;
+    }
+    match /session_locks/{id} { allow read, write: if false; }
+    match /profile_documents/{id} { allow read, write: if admin(); }
+    match /servers/{id} { allow read, write: if admin(); }
+    match /public_servers/{id} { allow read: if admin() || boundActive(); allow write: if admin(); }
+    match /configuration/{id} { allow read: if admin() || (id in ['client','social','sections'] && boundActive()); allow write: if admin(); }
+    match /audit/{id} {
+      allow read: if admin();
+      allow create: if admin() && request.resource.data.keys().hasOnly(['actor','action','target','at'])
+        && request.resource.data.actor == request.auth.uid && request.resource.data.at == request.time;
+      allow update, delete: if false;
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}

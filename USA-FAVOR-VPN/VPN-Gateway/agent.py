@@ -4,9 +4,18 @@ import shutil, concurrent.futures, hashlib, hmac, http.server, ipaddress, json, 
 from pathlib import Path
 CONFIG=Path('/etc/usa-favor/gateway.json')
 class Gateway:
- def __init__(self, config): self.c=config; self.sessions={}; self.lock=threading.Lock(); self.pki_lock=threading.Lock()
+ def __init__(self, config):
+  self.c=config; self.sessions={}; self.lock=threading.Lock(); self.pki_lock=threading.Lock(); self.store=None
+  if config.get("authorization_mode")=="firestore":
+   from firebase_store import FirebaseStore
+   self.store=FirebaseStore(config)
  def authorize(self, sid, token):
   if not re.fullmatch(r'\w{1,80}',sid) or not re.fullmatch(r'[A-Za-z0-9_-]{43}',token): return False
+  if self.store is not None:
+   ok=self.store.authorize(sid,token)
+   if ok:
+    with self.lock:self.sessions[sid]=token
+   return ok
   data=json.dumps({'gateway_id':self.c['gateway_id'],'session_id':sid,'token':token}).encode()
   req=urllib.request.Request(self.c['authorization_url'],data=data,headers={'Content-Type':'application/json','Authorization':'Bearer '+self.c['management_key']})
   try:
@@ -100,10 +109,26 @@ class Control(http.server.BaseHTTPRequestHandler):
  def log_message(self,*args):pass
  def do_POST(self):
   try:
-   if not hmac.compare_digest(self.headers.get('Authorization',''),'Bearer '+self.server.g.c['management_key']):return self.reply(403,{})
+   g=self.server.g;authorization=self.headers.get('Authorization','');appcheck=self.headers.get('X-Firebase-AppCheck');uid=None
+   if g.store is not None and authorization.startswith('Firebase '):
+    uid=g.store.identity(authorization,appcheck,admin=self.path.startswith('/control/'))
+   elif not hmac.compare_digest(authorization,'Bearer '+g.c['management_key']):return self.reply(403,{})
    size=int(self.headers.get('Content-Length','0'))
    if size<0 or size>4096:return self.reply(413,{})
    data=json.loads(self.rfile.read(size) or b'{}');g=self.server.g
+   if self.path=='/client/session':
+    if uid is None or g.store is None:return self.reply(403,{})
+    sid,token,expires=g.store.new_session(uid,data.get('version'))
+    try:profile=g.profile(sid,token)
+    except Exception:
+     g.store.end(uid,sid);raise
+    return self.reply(200,{'session_id':sid,'profile':profile,'expires_at':expires,'egress_ip':g.c['egress_ip']})
+   if self.path=='/client/end':
+    if uid is None or g.store is None or not re.fullmatch(r'\w{1,80}',str(data.get('session_id',''))):return self.reply(403,{})
+    sid=data['session_id'];g.store.end(uid,sid)
+    try:g.management('kill '+sid)
+    except Exception:pass
+    return self.reply(200,{'ok':True})
    if self.path=='/control/health':
     clients=g.clients();v={k:g.c[k] for k in ['gateway_id','host','port','transport','dns','egress_ip']};v.update(online=True,protocol='openvpn',active_sessions=len(clients),config_version=g.c['config_version']);return self.reply(200,v)
    if self.path=='/control/profile':return self.reply(200,{'profile':g.profile(data['session_id'],data['token']),'egress_ip':g.c['egress_ip']})
@@ -145,7 +170,9 @@ def validate(c):
  if not re.fullmatch(r'[\w-]{1,80}',c['gateway_id']):raise ValueError('Invalid gateway id')
  if not re.fullmatch(r'[a-zA-Z0-9.-]+',c['host']) or '.' not in c['host']:raise ValueError('Invalid hostname')
  if not re.fullmatch(r'[A-Za-z0-9_-]{43,128}',c['management_key']):raise ValueError('Use at least 32 random bytes')
- if c['authorization_url']!='https://us-central1-usa-favor.cloudfunctions.net/gatewayAuthorize':raise ValueError('Unexpected Firebase endpoint')
+ if c.get('authorization_mode')=='firestore':
+  if c.get('firebase_project')!='usa-favor':raise ValueError('Expected usa-favor project')
+ elif c.get('authorization_url')!='https://us-central1-usa-favor.cloudfunctions.net/gatewayAuthorize':raise ValueError('Unexpected Firebase endpoint')
  if not ipaddress.ip_address(c['egress_ip']).is_global:raise ValueError('A real public egress IP is required')
  if c['transport'] not in ['tcp','udp'] or type(c['port']) is not int or not 1<=c['port']<=65535:raise ValueError('Invalid transport')
  if type(c['max_sessions']) is not int or not 1<=c['max_sessions']<=200:raise ValueError('Capacity must be 1–200')

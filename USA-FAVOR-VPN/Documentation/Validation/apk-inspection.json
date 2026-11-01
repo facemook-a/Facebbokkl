@@ -1,0 +1,32 @@
+{
+  "USA-Admin": {
+    "bytes": 7244214,
+    "MiB": 6.91,
+    "ABIs": [
+      "arm64-v8a",
+      "armeabi-v7a",
+      "x86",
+      "x86_64"
+    ],
+    "signature": "verified; same debug certificate as previous delivery",
+    "no_private_key_profile_file_entries": true
+  },
+  "USA-Favor": {
+    "bytes": 10697732,
+    "MiB": 10.2,
+    "ABIs": [
+      "arm64-v8a"
+    ],
+    "signature": "verified; same debug certificate as previous delivery",
+    "no_private_key_profile_file_entries": true
+  },
+  "USA-Favor-x86_64": {
+    "bytes": 10980509,
+    "MiB": 10.47,
+    "ABIs": [
+      "x86_64"
+    ],
+    "signature": "verified; same debug certificate as previous delivery",
+    "no_private_key_profile_file_entries": true
+  }
+}

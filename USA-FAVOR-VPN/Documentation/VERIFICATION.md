@@ -1,26 +1,29 @@
-# Verified delivery — 2026-11-01
+# Verified delivery — 1.1.0-spark — 2026-11-01
 
 | Check | Actual result |
 |---|---|
-| Admin package | com.b5studios.usafavor |
-| Client package | com.usafavor.client |
-| Firebase selection | usa-favor; exact matching current registration in each app; generated app ID/API-key comparison passed |
-| Android build | Both Debug APKs compiled with Kotlin/Compose and embedded native OpenVPN |
-| Native ABIs | arm64-v8a and x86_64; engine executables and shared libraries present |
-| Android Lint | Both applications: no issues found |
-| APK signatures | Verified Android debug signatures; no production signing key supplied |
-| Backend tests | 14 passed, 0 failed, 0 skipped on Node 22; domain and isolated handler tests |
-| Gateway tests | 3 passed, 0 failed; isolated unit tests |
-| Scripts | Node syntax, Python compilation and Bash syntax passed |
-| Dependency audit | 6 moderate transitive findings; 0 high, 0 critical; see npm-audit.json and SECURITY.md |
-| Production signing guard | Expected rejection of missing B5_KEYSTORE_FILE; no production release claimed |
-| Firebase administrative access | CLI projects:list failed authentication; no resources deployed |
-| Firestore Emulator integration | Not run; official download blocked by network policy (storage.googleapis.com CONNECT 403) |
-| Android device/emulator runtime | Not run; adb listed no devices; /dev/kvm unavailable |
-| US VPS / live VPN / DNS/IPv6/revocation acceptance | Not run; no operational VPS or deployment credentials provided |
+| Admin | com.b5studios.usafavor, versionCode2, debug-signed; 7,244,214 bytes (6.91MiB) |
+| Client | com.usafavor.client, versionCode2, English/LTR; ARM64 10,697,732 bytes (10.20MiB) |
+| Optional Client | Separate x86_64 APK 10,980,509 bytes (10.47MiB) |
+| Final Android build | Both Kotlin/Compose APKs with embedded Client OpenVPN compiled successfully |
+| Android Lint | Both applications: zero errors and zero warnings |
+| Firebase configuration | usa-favor; exact matching current app registrations and generated app-ID/API-key comparison passed, without printing key values |
+| APK package/signature | Version/package, ZIP integrity and native ABI checked; signatures verified; same debug certificate as previous delivery supports in-place updates |
+| Private-profile packaging | No .ovpn/.key/.pem/.p12/.pfx entries in delivered APKs; uploaded shared-key legacy profile excluded |
+| Firestore integration | **16 passed, 0 failed** on the official emulator in GitHub Actions [run41288670814](https://github.com/facemook-a/Facebbokkl/actions/runs/41288670814), commit0d1101e; final canonical and app-packaged rules match that tested rules hash |
+| Local Firestore emulator | Download blocked by storage.googleapis.com network policy; no local integration-run claim |
+| Gateway | **9 passed, 0 failed**, isolated Python authorization/helper tests; Python compilation and installer Bash syntax passed |
+| Native Compose rendering | **2 passed, 0 failed, 0 skipped** via Paparazzi; component images in Shared/src/test/snapshots/images, not a full-device acceptance test |
+| Active license backend | Direct Firestore Spark rules/transactions; no Cloud Functions/billing/TTL deployment required within free quotas |
+| Firebase deployment | Not performed in this workspace; owner must create(default), publish rules and enable Auth providers |
+| Live VPN / DNS / IPv6 / revocation | Not tested against a real owned gateway or physical Android device; third-party OVPN metadata is not proof of management/location |
+| Production signing | Not supplied; these are Debug test builds, not production-signed releases |
+| Legacy Functions audit | Retained unused source reports six moderate transitive npm findings; not the active Spark runtime |
 
-Logs, package/signature reports and SHA-256 digests are in [Validation](Validation/). These are test APKs, not a claim of a verified production service. No application data was seeded to fabricate statistics, licenses or servers. The old VPN profile and private key were not shipped or connected to.
+Evidence is in [Validation/](Validation/): final build/lint, package/manifests/signatures/checksums, gateway logs, native rendering results and the observed public CI result with the SHA-256 of the tested rules. Full CI logs are uploaded by the read-only workflow as a GitHub artifact (seven-day retention). No live backend data was seeded to fabricate customers, statistics, IPs or servers.
 
-The source archive includes matching Firebase Android configuration (public project/app identifiers), but no VPS, issuer, backend service-account or production-signing secrets. Keep the Firebase owner/IAM/App Check and gateway prerequisites in FIREBASE.md and GATEWAY.md separate from the successful compiler/unit checks.
+The free license workflow still requires owner setup in [FREE-SETUP.md](FREE-SETUP.md). Spark quotas are finite. One-code binding means one installation UID; reinstalling needs an admin reset. The admin reviews rejected second-installation attempts and chooses whether to ban, preventing an attacker from automatically disabling someone else's code by attempting activation.
 
-Reusable cloud-environment `install_script` and `start_skill` were saved to the draft, replacing obsolete static-site startup guidance. Saving does not publish the snapshot; review/save the environment settings and publish when you want future tasks to use this prepared toolchain.
+Real VPN service requires authorized gateway management and acceptance in [GATEWAY.md](GATEWAY.md). No claim of free unlimited hosting, guaranteed US platform content, tested Play Integrity or verified tunnel is made. Source archives contain matching Firebase Android public project/app registrations but no VPS, issuing CA, backend service-account or production signing keys.
+
+The reusable environment install_script and start_skill were saved for the Android/Spark workflow; saving a draft does not publish the environment snapshot or deploy Firebase. Automatic approval review rejected a proposed CI repository-write logging method. It was replaced with read-only CI annotations/artifacts; no persistent CI repository-write permission was granted.

@@ -1,4 +1,5 @@
 plugins { id("com.android.library"); id("org.jetbrains.kotlin.android"); id("org.jetbrains.kotlin.plugin.compose") }
+if (providers.gradleProperty("visualReview").orNull == "true") apply(plugin="app.cash.paparazzi")
 android {
  namespace="com.b5studios.shared"; compileSdk=35
  defaultConfig { minSdk=26 }
@@ -7,6 +8,8 @@ android {
  kotlinOptions { jvmTarget="17" }
 }
 dependencies {
+ testImplementation("app.cash.paparazzi:paparazzi:1.3.5")
+ testImplementation("junit:junit:4.13.2")
  api(platform("androidx.compose:compose-bom:2025.02.00"))
  api("androidx.compose.material3:material3")
  api("androidx.compose.material:material-icons-extended")
@@ -16,7 +19,7 @@ dependencies {
  api("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.10.1")
  api(platform("com.google.firebase:firebase-bom:33.10.0"))
  api("com.google.firebase:firebase-auth")
- api("com.google.firebase:firebase-functions")
+ api("com.google.firebase:firebase-firestore")
  api("com.google.firebase:firebase-appcheck-playintegrity")
  debugApi("com.google.firebase:firebase-appcheck-debug")
 }
