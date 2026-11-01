@@ -38,9 +38,20 @@ jobs:
           from pathlib import Path
           p=Path('USA-FAVOR-VPN/Documentation/Validation/spark-rules-ci.log')
           if p.exists():
-              message='\n'.join(p.read_text(errors='replace').splitlines()[-90:])[-18000:]
+              text=p.read_text(errors='replace')
+              marker='✖ failing tests:'
+              message=(text.split(marker,1)[-1] if marker in text else '\n'.join(text.splitlines()[-35:]))[:3800]
               message=message.replace('%','%25').replace('\r','%0D').replace('\n','%0A')
               print('::error title=Spark test diagnostics::'+message)
+          PY
+      - name: Publish result count
+        if: success()
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          lines=Path('USA-FAVOR-VPN/Documentation/Validation/spark-rules-ci.log').read_text().splitlines()
+          summary=' | '.join(x for x in lines if any(k in x for k in ['ℹ tests','ℹ pass','ℹ fail','# tests','# pass','# fail']))
+          print('::notice title=Spark suite result::'+summary)
           PY
       - uses: actions/upload-artifact@v5
         if: always()

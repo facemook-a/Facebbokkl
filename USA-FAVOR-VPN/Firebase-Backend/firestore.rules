@@ -2,7 +2,7 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     function signed() { return request.auth != null; }
-    function admin() { return signed() && request.auth.token.admin == true; }
+    function admin() { return signed() && ('admin' in request.auth.token) && request.auth.token.admin == true; }
     function expiryOk(l) {
       return l.expires_at is timestamp
         ? request.time < l.expires_at

@@ -1,6 +1,7 @@
 const {test,before,after,beforeEach}=require('node:test');const assert=require('node:assert/strict');const fs=require('node:fs');const {createHash}=require('node:crypto');
 const {initializeTestEnvironment,assertFails,assertSucceeds}=require('@firebase/rules-unit-testing');
-const {doc,setDoc,getDoc,getDocs,collection,query,where,runTransaction,serverTimestamp,Timestamp,updateDoc,deleteDoc,writeBatch}=require('firebase/firestore');
+const {doc,setDoc,getDoc,getDocs,collection,query,where,runTransaction,serverTimestamp,Timestamp,updateDoc,deleteDoc,writeBatch,setLogLevel}=require('firebase/firestore');
+setLogLevel('silent');
 let env;const projectId='demo-usa-favor';const code='USA-ABCD-EFGH';const id=createHash('sha256').update(code).digest('hex');
 const valid=(patch={})=>({schema_version:3,code,is_active:true,status:'unused',created_at:Timestamp.fromMillis(Date.now()-10000),created_by:'admin',activated_at:null,expires_at:null,duration_days:30,activation_policy:'first_activation',device_binding_id:null,revoked_at:null,updated_at:Timestamp.now(),...patch});
 const client=uid=>env.authenticatedContext(uid,{firebase:{sign_in_provider:'anonymous'}}).firestore();const admin=()=>env.authenticatedContext('admin',{admin:true}).firestore();
