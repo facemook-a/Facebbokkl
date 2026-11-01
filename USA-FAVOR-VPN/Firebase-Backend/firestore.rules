@@ -91,6 +91,7 @@ service cloud.firestore {
       allow update: if admin() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['revoked']) && request.resource.data.revoked == true;
     }
     match /session_locks/{id} { allow read, write: if false; }
+    match /profile_documents/{id} { allow read, write: if admin(); }
     match /servers/{id} { allow read, write: if admin(); }
     match /public_servers/{id} { allow read: if admin() || boundActive(); allow write: if admin(); }
     match /configuration/{id} { allow read: if admin() || (id in ['client','social','sections'] && boundActive()); allow write: if admin(); }
