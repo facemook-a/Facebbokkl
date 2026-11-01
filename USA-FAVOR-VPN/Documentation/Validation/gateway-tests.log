@@ -1,0 +1,8 @@
+test_bad_sessions_fail_closed (test_agent.Tests.test_bad_sessions_fail_closed) ... ok
+test_management_metrics (test_agent.Tests.test_management_metrics) ... ok
+test_unreachable_backend_denies (test_agent.Tests.test_unreachable_backend_denies) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.001s
+
+OK

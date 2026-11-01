@@ -1,0 +1,6 @@
+OpenVPN for Android v0.7.69
+Commit f669267e2547fddca04d0bc699739137085eb633
+https://github.com/schwabe/ics-openvpn
+Pinned native OpenVPN c29ee42e48df0de5993f7b256829196e67e76006
+Pinned native OpenSSL b280e0c0c81ce6f8d5291c1f8efb6712c357c28a
+See upstream-doc/LICENSE.txt and Documentation/SECURITY.md for B5 integration changes.

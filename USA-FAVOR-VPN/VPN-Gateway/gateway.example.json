@@ -1,0 +1,12 @@
+{
+  "gateway_id":"REPLACE_WITH_REGISTERED_SERVER_ID",
+  "host":"vpn.your-owned-domain.example",
+  "egress_ip":"REPLACE_WITH_REAL_PUBLIC_IPV4",
+  "port":1194,
+  "transport":"udp",
+  "dns":["1.1.1.1","9.9.9.9"],
+  "max_sessions":100,
+  "config_version":1,
+  "authorization_url":"https://us-central1-usa-favor.cloudfunctions.net/gatewayAuthorize",
+  "management_key":"REPLACE_WITH_RANDOM_32_BYTE_BASE64URL_SECRET"
+}

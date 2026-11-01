@@ -1,0 +1,227 @@
+Admin-App: com.b5studios.usafavor — project and selected registration verified; no credential values printed
+Client-App: com.usafavor.client — project and selected registration verified; no credential values printed
+> Task :Admin-App:preBuild UP-TO-DATE
+> Task :Admin-App:preDebugBuild UP-TO-DATE
+> Task :Admin-App:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :Admin-App:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :Admin-App:generateDebugBuildConfig UP-TO-DATE
+> Task :Shared:preBuild UP-TO-DATE
+> Task :Shared:preDebugBuild UP-TO-DATE
+> Task :Shared:writeDebugAarMetadata UP-TO-DATE
+> Task :Admin-App:checkDebugAarMetadata UP-TO-DATE
+> Task :Admin-App:generateDebugResValues UP-TO-DATE
+> Task :Admin-App:processDebugGoogleServices UP-TO-DATE
+> Task :Shared:generateDebugResValues UP-TO-DATE
+> Task :Shared:generateDebugResources UP-TO-DATE
+> Task :Shared:packageDebugResources UP-TO-DATE
+> Task :Admin-App:mapDebugSourceSetPaths UP-TO-DATE
+> Task :Admin-App:generateDebugResources UP-TO-DATE
+> Task :Admin-App:mergeDebugResources UP-TO-DATE
+> Task :Admin-App:packageDebugResources UP-TO-DATE
+> Task :Admin-App:parseDebugLocalResources UP-TO-DATE
+> Task :Admin-App:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :Admin-App:extractDeepLinksDebug UP-TO-DATE
+> Task :Shared:extractDeepLinksDebug UP-TO-DATE
+> Task :Shared:processDebugManifest UP-TO-DATE
+> Task :Admin-App:processDebugMainManifest UP-TO-DATE
+> Task :Admin-App:processDebugManifest UP-TO-DATE
+> Task :Admin-App:processDebugManifestForPackage UP-TO-DATE
+> Task :Shared:compileDebugLibraryResources UP-TO-DATE
+> Task :Shared:parseDebugLocalResources UP-TO-DATE
+> Task :Shared:generateDebugRFile UP-TO-DATE
+> Task :Admin-App:processDebugResources UP-TO-DATE
+> Task :Shared:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :Shared:compileDebugKotlin UP-TO-DATE
+> Task :Shared:javaPreCompileDebug UP-TO-DATE
+> Task :Shared:compileDebugJavaWithJavac NO-SOURCE
+> Task :Shared:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :Admin-App:compileDebugKotlin UP-TO-DATE
+> Task :Admin-App:javaPreCompileDebug UP-TO-DATE
+> Task :Admin-App:compileDebugJavaWithJavac UP-TO-DATE
+> Task :Admin-App:mergeDebugShaders UP-TO-DATE
+> Task :Admin-App:compileDebugShaders NO-SOURCE
+> Task :Admin-App:generateDebugAssets UP-TO-DATE
+> Task :Shared:mergeDebugShaders UP-TO-DATE
+> Task :Shared:compileDebugShaders NO-SOURCE
+> Task :Shared:generateDebugAssets UP-TO-DATE
+> Task :Shared:packageDebugAssets UP-TO-DATE
+> Task :Admin-App:mergeDebugAssets UP-TO-DATE
+> Task :Admin-App:compressDebugAssets UP-TO-DATE
+> Task :Shared:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :Admin-App:desugarDebugFileDependencies UP-TO-DATE
+> Task :Admin-App:dexBuilderDebug UP-TO-DATE
+> Task :Admin-App:mergeDebugGlobalSynthetics UP-TO-DATE
+> Task :Admin-App:processDebugJavaRes UP-TO-DATE
+> Task :Shared:processDebugJavaRes UP-TO-DATE
+> Task :Admin-App:mergeDebugJavaResource UP-TO-DATE
+> Task :Admin-App:checkDebugDuplicateClasses UP-TO-DATE
+> Task :Admin-App:mergeExtDexDebug UP-TO-DATE
+> Task :Shared:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :Admin-App:mergeProjectDexDebug UP-TO-DATE
+> Task :Admin-App:mergeLibDexDebug UP-TO-DATE
+> Task :Admin-App:mergeDebugJniLibFolders UP-TO-DATE
+> Task :Shared:mergeDebugJniLibFolders UP-TO-DATE
+> Task :Shared:mergeDebugNativeLibs NO-SOURCE
+> Task :Shared:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :Admin-App:mergeDebugNativeLibs UP-TO-DATE
+> Task :Admin-App:stripDebugDebugSymbols UP-TO-DATE
+> Task :Admin-App:validateSigningDebug UP-TO-DATE
+> Task :Admin-App:writeDebugAppMetadata UP-TO-DATE
+> Task :Admin-App:writeDebugSigningConfigVersions UP-TO-DATE
+> Task :Admin-App:packageDebug UP-TO-DATE
+> Task :Admin-App:createDebugApkListingFileRedirect UP-TO-DATE
+> Task :Admin-App:assembleDebug UP-TO-DATE
+> Task :Client-App:preBuild UP-TO-DATE
+> Task :Client-App:preDebugBuild UP-TO-DATE
+> Task :Client-App:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :Client-App:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :Client-App:generateDebugBuildConfig UP-TO-DATE
+> Task :OpenVPN-Core:preBuild UP-TO-DATE
+> Task :OpenVPN-Core:preDebugBuild UP-TO-DATE
+> Task :OpenVPN-Core:writeDebugAarMetadata UP-TO-DATE
+> Task :Client-App:checkDebugAarMetadata UP-TO-DATE
+> Task :Client-App:generateDebugResValues UP-TO-DATE
+> Task :Client-App:processDebugGoogleServices UP-TO-DATE
+> Task :OpenVPN-Core:generateDebugResValues UP-TO-DATE
+> Task :OpenVPN-Core:generateDebugResources UP-TO-DATE
+> Task :OpenVPN-Core:packageDebugResources UP-TO-DATE
+> Task :Client-App:mapDebugSourceSetPaths UP-TO-DATE
+> Task :Client-App:generateDebugResources UP-TO-DATE
+> Task :Client-App:mergeDebugResources UP-TO-DATE
+> Task :Client-App:packageDebugResources UP-TO-DATE
+> Task :Client-App:parseDebugLocalResources UP-TO-DATE
+> Task :Client-App:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :Client-App:extractDeepLinksDebug UP-TO-DATE
+> Task :OpenVPN-Core:extractDeepLinksDebug UP-TO-DATE
+> Task :OpenVPN-Core:processDebugManifest UP-TO-DATE
+> Task :Client-App:processDebugMainManifest UP-TO-DATE
+> Task :Client-App:processDebugManifest UP-TO-DATE
+> Task :Client-App:processDebugManifestForPackage UP-TO-DATE
+> Task :OpenVPN-Core:compileDebugLibraryResources UP-TO-DATE
+> Task :OpenVPN-Core:parseDebugLocalResources UP-TO-DATE
+> Task :OpenVPN-Core:generateDebugRFile UP-TO-DATE
+> Task :Client-App:processDebugResources UP-TO-DATE
+> Task :OpenVPN-Core:compileDebugAidl UP-TO-DATE
+> Task :OpenVPN-Core:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :OpenVPN-Core:generateDebugBuildConfig UP-TO-DATE
+> Task :OpenVPN-Core:compileDebugKotlin UP-TO-DATE
+> Task :OpenVPN-Core:javaPreCompileDebug UP-TO-DATE
+> Task :OpenVPN-Core:compileDebugJavaWithJavac UP-TO-DATE
+> Task :OpenVPN-Core:bundleLibCompileToJarDebug UP-TO-DATE
+> Task :Client-App:javaPreCompileDebug UP-TO-DATE
+> Task :Client-App:mergeDebugShaders UP-TO-DATE
+> Task :Client-App:compileDebugShaders NO-SOURCE
+> Task :Client-App:generateDebugAssets UP-TO-DATE
+> Task :OpenVPN-Core:mergeDebugShaders UP-TO-DATE
+> Task :OpenVPN-Core:compileDebugShaders NO-SOURCE
+> Task :OpenVPN-Core:generateDebugAssets UP-TO-DATE
+> Task :OpenVPN-Core:packageDebugAssets UP-TO-DATE
+> Task :Client-App:mergeDebugAssets UP-TO-DATE
+> Task :Client-App:compressDebugAssets UP-TO-DATE
+> Task :OpenVPN-Core:bundleLibRuntimeToJarDebug UP-TO-DATE
+> Task :Client-App:desugarDebugFileDependencies UP-TO-DATE
+> Task :OpenVPN-Core:processDebugJavaRes UP-TO-DATE
+> Task :Client-App:checkDebugDuplicateClasses UP-TO-DATE
+> Task :Client-App:mergeExtDexDebug UP-TO-DATE
+> Task :OpenVPN-Core:bundleLibRuntimeToDirDebug UP-TO-DATE
+> Task :Client-App:mergeDebugJniLibFolders UP-TO-DATE
+> Task :OpenVPN-Core:configureCMakeDebug[arm64-v8a]
+> Task :Client-App:mergeLibDexDebug UP-TO-DATE
+> Task :OpenVPN-Core:buildCMakeDebug[arm64-v8a]
+> Task :OpenVPN-Core:configureCMakeDebug[x86_64]
+> Task :OpenVPN-Core:buildCMakeDebug[x86_64]
+> Task :OpenVPN-Core:mergeDebugJniLibFolders UP-TO-DATE
+> Task :OpenVPN-Core:mergeDebugNativeLibs UP-TO-DATE
+> Task :OpenVPN-Core:copyDebugJniLibsProjectOnly UP-TO-DATE
+> Task :Client-App:mergeDebugNativeLibs UP-TO-DATE
+> Task :Client-App:stripDebugDebugSymbols UP-TO-DATE
+> Task :Client-App:validateSigningDebug UP-TO-DATE
+> Task :Client-App:writeDebugAppMetadata UP-TO-DATE
+> Task :Client-App:writeDebugSigningConfigVersions UP-TO-DATE
+> Task :Shared:stripDebugDebugSymbols NO-SOURCE
+> Task :Shared:copyDebugJniLibsProjectAndLocalJars UP-TO-DATE
+> Task :Shared:extractDebugAnnotations UP-TO-DATE
+> Task :Shared:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :Shared:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :Shared:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :Shared:prepareDebugArtProfile UP-TO-DATE
+> Task :Shared:prepareLintJarForPublish UP-TO-DATE
+> Task :Shared:mergeDebugJavaResource UP-TO-DATE
+> Task :Shared:syncDebugLibJars UP-TO-DATE
+> Task :Shared:bundleDebugLocalLintAar UP-TO-DATE
+> Task :Admin-App:bundleDebugClassesToCompileJar UP-TO-DATE
+> Task :Admin-App:preDebugAndroidTestBuild SKIPPED
+> Task :Admin-App:generateDebugAndroidTestResValues UP-TO-DATE
+> Task :Shared:createFullJarDebug UP-TO-DATE
+> Task :Shared:writeDebugLintModelMetadata UP-TO-DATE
+> Task :Admin-App:generateDebugAndroidTestLintModel UP-TO-DATE
+> Task :Admin-App:extractProguardFiles UP-TO-DATE
+> Task :Shared:extractProguardFiles UP-TO-DATE
+> Task :Shared:generateDebugLintModel UP-TO-DATE
+> Task :Admin-App:generateDebugLintReportModel UP-TO-DATE
+> Task :Admin-App:preDebugUnitTestBuild UP-TO-DATE
+> Task :Admin-App:generateDebugUnitTestLintModel UP-TO-DATE
+> Task :Shared:lintAnalyzeDebug UP-TO-DATE
+> Task :Admin-App:lintAnalyzeDebug UP-TO-DATE
+> Task :Admin-App:lintAnalyzeDebugAndroidTest UP-TO-DATE
+> Task :Admin-App:lintAnalyzeDebugUnitTest UP-TO-DATE
+> Task :Shared:preDebugAndroidTestBuild UP-TO-DATE
+> Task :Shared:generateDebugAndroidTestResValues UP-TO-DATE
+> Task :Shared:generateDebugAndroidTestLintModel UP-TO-DATE
+> Task :Shared:preDebugUnitTestBuild UP-TO-DATE
+> Task :Shared:generateDebugUnitTestLintModel UP-TO-DATE
+> Task :Shared:lintAnalyzeDebugAndroidTest UP-TO-DATE
+> Task :Shared:lintAnalyzeDebugUnitTest UP-TO-DATE
+> Task :Admin-App:lintReportDebug UP-TO-DATE
+> Task :Admin-App:lintDebug
+> Task :OpenVPN-Core:stripDebugDebugSymbols UP-TO-DATE
+> Task :OpenVPN-Core:copyDebugJniLibsProjectAndLocalJars UP-TO-DATE
+> Task :OpenVPN-Core:extractDebugAnnotations UP-TO-DATE
+> Task :OpenVPN-Core:extractDeepLinksForAarDebug UP-TO-DATE
+> Task :OpenVPN-Core:mergeDebugGeneratedProguardFiles UP-TO-DATE
+> Task :OpenVPN-Core:mergeDebugConsumerProguardFiles UP-TO-DATE
+> Task :OpenVPN-Core:prepareDebugArtProfile UP-TO-DATE
+> Task :OpenVPN-Core:prepareLintJarForPublish UP-TO-DATE
+> Task :OpenVPN-Core:mergeDebugJavaResource UP-TO-DATE
+> Task :OpenVPN-Core:syncDebugLibJars UP-TO-DATE
+> Task :OpenVPN-Core:bundleDebugLocalLintAar UP-TO-DATE
+> Task :Client-App:preDebugAndroidTestBuild SKIPPED
+> Task :Client-App:generateDebugAndroidTestResValues UP-TO-DATE
+> Task :OpenVPN-Core:createFullJarDebug UP-TO-DATE
+> Task :OpenVPN-Core:writeDebugLintModelMetadata UP-TO-DATE
+> Task :Client-App:extractProguardFiles UP-TO-DATE
+> Task :OpenVPN-Core:extractProguardFiles UP-TO-DATE
+> Task :OpenVPN-Core:generateDebugLintModel UP-TO-DATE
+> Task :Client-App:preDebugUnitTestBuild UP-TO-DATE
+> Task :OpenVPN-Core:lintAnalyzeDebug UP-TO-DATE
+> Task :OpenVPN-Core:preDebugAndroidTestBuild UP-TO-DATE
+> Task :OpenVPN-Core:generateDebugAndroidTestResValues UP-TO-DATE
+> Task :OpenVPN-Core:generateDebugAndroidTestLintModel UP-TO-DATE
+> Task :OpenVPN-Core:preDebugUnitTestBuild UP-TO-DATE
+> Task :OpenVPN-Core:generateDebugUnitTestLintModel UP-TO-DATE
+> Task :OpenVPN-Core:lintAnalyzeDebugAndroidTest UP-TO-DATE
+> Task :OpenVPN-Core:lintAnalyzeDebugUnitTest UP-TO-DATE
+> Task :Client-App:compileDebugKotlin
+> Task :Client-App:compileDebugJavaWithJavac UP-TO-DATE
+> Task :Client-App:dexBuilderDebug
+> Task :Client-App:mergeDebugGlobalSynthetics UP-TO-DATE
+> Task :Client-App:processDebugJavaRes UP-TO-DATE
+> Task :Client-App:mergeDebugJavaResource UP-TO-DATE
+> Task :Client-App:bundleDebugClassesToCompileJar
+> Task :Client-App:generateDebugLintReportModel
+> Task :Client-App:mergeProjectDexDebug
+> Task :Client-App:generateDebugAndroidTestLintModel
+> Task :Client-App:generateDebugUnitTestLintModel
+> Task :Client-App:packageDebug
+> Task :Client-App:createDebugApkListingFileRedirect UP-TO-DATE
+> Task :Client-App:assembleDebug
+> Task :Client-App:lintAnalyzeDebugAndroidTest
+> Task :Client-App:lintAnalyzeDebugUnitTest
+> Task :Client-App:lintAnalyzeDebug
+> Task :Client-App:lintReportDebug
+> Task :Client-App:lintDebug
+
+BUILD SUCCESSFUL in 8s
+185 actionable tasks: 18 executed, 167 up-to-date
+Admin-App: com.b5studios.usafavor — project and selected registration verified; no credential values printed
+Client-App: com.usafavor.client — project and selected registration verified; no credential values printed

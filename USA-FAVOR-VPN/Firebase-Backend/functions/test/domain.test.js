@@ -1,0 +1,11 @@
+const {test}=require('node:test');const a=require('node:assert/strict');const d=require('../domain');
+const l={is_active:true,status:'unused',duration_days:30,expires_at:null,device_binding_id:null};
+test('codes are cryptographic, formatted, and sample unique',()=>{const s=new Set(Array.from({length:10000},d.code));a.equal(s.size,10000);for(const x of s)a.match(x,/^USA-[A-Z2-9]{4}-[A-Z2-9]{4}$/);});
+test('first activation uses trusted time and binds device',()=>{const v=d.activate(l,'one',1000);a.equal(v.expires_at,2592001000);a.equal(v.activated_at,1000);a.equal(d.activate(v,'one',2000).expires_at,v.expires_at);a.throws(()=>d.activate(v,'two',2000));});
+test('generation policy never extends on activation',()=>{a.equal(d.activate({...l,expires_at:5000},'one',1000).expires_at,5000);});
+test('expired, revoked, inactive licenses cannot authorize',()=>{for(const x of [{...l,expires_at:999},{...l,status:'revoked'},{...l,is_active:false}])a.throws(()=>d.activate(x,'one',1000));});
+test('durations are bounded integers',()=>{for(const v of [0,-1,1.5,3651,'30'])a.throws(()=>d.duration(v));a.equal(d.duration(365),365);});
+test('unsafe URLs and private hosts rejected',()=>{for(const u of ['http://example.com','javascript:alert(1)','https://127.0.0.1','https://10.1.1.1','https://user:pass@example.com','https://metadata.internal'])a.equal(d.safeUrl(u),false,u);a.equal(d.safeUrl('https://wa.me/123'),true);a.equal(d.safeUrl('mailto:help@example.com'),true);});
+test('import rejects embedded keys and executable hooks',()=>{for(const s of ['<key>secret</key>','up /bin/evil','config another.conf','<auth-user-pass>x</auth-user-pass>'])a.throws(()=>d.ovpnSummary(s));});
+test('import validates endpoint and modern crypto',()=>{const base='client\ndev tun\nproto udp\nremote vpn.example.com 1194\ndata-ciphers AES-256-GCM\nremote-cert-tls server';a.equal(d.ovpnSummary(base).port,1194);a.throws(()=>d.ovpnSummary(base.replace('AES-256-GCM','AES-128-CBC')));a.throws(()=>d.ovpnSummary(base.replace('vpn.example.com','127.0.0.1')));});
+test('constant time comparison rejects malformed tokens',()=>{a.equal(d.equal('a','a'),true);a.equal(d.equal('a','b'),false);a.equal(d.equal(undefined,'a'),false);});

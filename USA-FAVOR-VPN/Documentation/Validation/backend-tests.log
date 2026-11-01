@@ -1,0 +1,100 @@
+TAP version 13
+# Subtest: codes are cryptographic, formatted, and sample unique
+ok 1 - codes are cryptographic, formatted, and sample unique
+  ---
+  duration_ms: 31.90007
+  type: 'test'
+  ...
+# Subtest: first activation uses trusted time and binds device
+ok 2 - first activation uses trusted time and binds device
+  ---
+  duration_ms: 0.312695
+  type: 'test'
+  ...
+# Subtest: generation policy never extends on activation
+ok 3 - generation policy never extends on activation
+  ---
+  duration_ms: 0.143428
+  type: 'test'
+  ...
+# Subtest: expired, revoked, inactive licenses cannot authorize
+ok 4 - expired, revoked, inactive licenses cannot authorize
+  ---
+  duration_ms: 0.122436
+  type: 'test'
+  ...
+# Subtest: durations are bounded integers
+ok 5 - durations are bounded integers
+  ---
+  duration_ms: 0.179643
+  type: 'test'
+  ...
+# Subtest: unsafe URLs and private hosts rejected
+ok 6 - unsafe URLs and private hosts rejected
+  ---
+  duration_ms: 4.137088
+  type: 'test'
+  ...
+# Subtest: import rejects embedded keys and executable hooks
+ok 7 - import rejects embedded keys and executable hooks
+  ---
+  duration_ms: 0.766214
+  type: 'test'
+  ...
+# Subtest: import validates endpoint and modern crypto
+ok 8 - import validates endpoint and modern crypto
+  ---
+  duration_ms: 0.865014
+  type: 'test'
+  ...
+# Subtest: constant time comparison rejects malformed tokens
+ok 9 - constant time comparison rejects malformed tokens
+  ---
+  duration_ms: 0.336721
+  type: 'test'
+  ...
+# Operation failed Error
+# Operation failed Error
+# Operation failed Error
+# Operation failed Error
+# Operation failed Error
+# Operation failed Error
+# Subtest: privileged handlers reject missing or ordinary authentication
+ok 10 - privileged handlers reject missing or ordinary authentication
+  ---
+  duration_ms: 2.510635
+  type: 'test'
+  ...
+# Subtest: generation + simultaneous activation bind exactly one device; revoked license refresh denied
+ok 11 - generation + simultaneous activation bind exactly one device; revoked license refresh denied
+  ---
+  duration_ms: 5.294586
+  type: 'test'
+  ...
+# Subtest: invalid imports never create a server
+ok 12 - invalid imports never create a server
+  ---
+  duration_ms: 0.866116
+  type: 'test'
+  ...
+# Subtest: remote settings reject executable or unknown fields
+ok 13 - remote settings reject executable or unknown fields
+  ---
+  duration_ms: 0.829851
+  type: 'test'
+  ...
+# Subtest: customer cannot end another customer session
+ok 14 - customer cannot end another customer session
+  ---
+  duration_ms: 0.71087
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 354.622459

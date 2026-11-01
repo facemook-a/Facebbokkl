@@ -1,0 +1,14 @@
+.gradle/
+**/build/
+**/.cxx/
+local.properties
+**/google-services.json
+**/node_modules/
+**/__pycache__/
+*.jks
+*.keystore
+.env*
+!*.example
+**/gateway.json
+**/.secret.local
+artifacts/
