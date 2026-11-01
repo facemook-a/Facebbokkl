@@ -29,9 +29,12 @@ class AppScreenReviewTest {
  private fun model(state:ClientState):ClientModel {
   val model=Mockito.mock(ClientModel::class.java)
   Mockito.`when`(model.state).thenReturn(MutableStateFlow(state))
+  Mockito.`when`(model.tunnel).thenReturn(MissingProvider{})
   return model
  }
  @Test fun splash(){val m=model(ClientState());render("client_initializing"){ClientScreen(m)}}
  @Test fun activation(){val m=model(ClientState(initialized=true));render("client_activation"){ClientScreen(m)}}
- @Test fun homeWithoutPublishedGateway(){val m=model(ClientState(initialized=true,licensed=true));render("client_home_disconnected_empty"){ClientScreen(m)}}
+ @Test fun homeProviderNotConnected(){val m=model(ClientState(initialized=true,licensed=true));render("client_home_provider_not_connected"){ClientScreen(m)}}
+ @Test fun activationSuccess(){val m=model(ClientState(initialized=true,licensed=true,activationSuccess=true));render("client_activation_success"){ClientScreen(m)}}
+ @Test fun updateNotice(){val m=model(ClientState(initialized=true,appUpdate=mapOf("enabled" to true,"latest_version_code" to 6L,"minimum_version" to 1L,"required" to false,"apk_url" to "https://example.com/app.apk","apk_sha256" to "a".repeat(64),"message" to "A new version is ready.")));render("client_update_notice"){ClientScreen(m)}}
 }

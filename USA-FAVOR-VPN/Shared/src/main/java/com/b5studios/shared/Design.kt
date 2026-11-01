@@ -33,25 +33,31 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.ui.unit.*
 import kotlin.math.*
 
-val Gold=Color(0xFFF4CD70);val Violet=Color(0xFFAD62FF);val Cyan=Color(0xFF4ADFFF);val Navy=Color(0xFF060918)
+val HackerGreen=Color(0xFF6CE5B1)
+val Gold=Color(0xFFDABC78);val Violet=Color(0xFF99B4AD);val Cyan=Color(0xFF4ADFFF);val Navy=Color(0xFF06120F)
 val PremiumFont=FontFamily(Font(R.font.cairo,weight=FontWeight.Normal,variationSettings=FontVariation.Settings(FontVariation.weight(400))),Font(R.font.cairo,weight=FontWeight.Medium,variationSettings=FontVariation.Settings(FontVariation.weight(500))),Font(R.font.cairo,weight=FontWeight.SemiBold,variationSettings=FontVariation.Settings(FontVariation.weight(600))),Font(R.font.cairo,weight=FontWeight.Bold,variationSettings=FontVariation.Settings(FontVariation.weight(700))),Font(R.font.cairo,weight=FontWeight.Black,variationSettings=FontVariation.Settings(FontVariation.weight(900))))
 val PremiumTypography=Typography().let{t->Typography(displayLarge=t.displayLarge.copy(fontFamily=PremiumFont),displayMedium=t.displayMedium.copy(fontFamily=PremiumFont),displaySmall=t.displaySmall.copy(fontFamily=PremiumFont),headlineLarge=t.headlineLarge.copy(fontFamily=PremiumFont),headlineMedium=t.headlineMedium.copy(fontFamily=PremiumFont),headlineSmall=t.headlineSmall.copy(fontFamily=PremiumFont),titleLarge=t.titleLarge.copy(fontFamily=PremiumFont),titleMedium=t.titleMedium.copy(fontFamily=PremiumFont),titleSmall=t.titleSmall.copy(fontFamily=PremiumFont),bodyLarge=t.bodyLarge.copy(fontFamily=PremiumFont),bodyMedium=t.bodyMedium.copy(fontFamily=PremiumFont),bodySmall=t.bodySmall.copy(fontFamily=PremiumFont),labelLarge=t.labelLarge.copy(fontFamily=PremiumFont),labelMedium=t.labelMedium.copy(fontFamily=PremiumFont),labelSmall=t.labelSmall.copy(fontFamily=PremiumFont))}
-val LocalAccent=staticCompositionLocalOf{Violet}
+val LocalAccent=staticCompositionLocalOf{HackerGreen}
 @Composable fun FavorTheme(admin:Boolean=false,content:@Composable ()->Unit){
- val accent=if(admin)Gold else Violet
- MaterialTheme(colorScheme=darkColorScheme(primary=accent,secondary=Cyan,background=Navy,surface=Color(0xFF12172B),onBackground=Color(0xFFF5F1FF),onSurface=Color(0xFFF5F1FF),onPrimary=if(admin)Navy else Color.White,error=Color(0xFFFF8192)),typography=PremiumTypography){
+ val accent=if(admin)Gold else HackerGreen
+ MaterialTheme(colorScheme=darkColorScheme(primary=accent,secondary=Cyan,background=Navy,surface=Color(0xFF12172B),onBackground=Color(0xFFF5F1FF),onSurface=Color(0xFFF5F1FF),onPrimary=Navy,error=Color(0xFFFF8192)),typography=PremiumTypography){
   CompositionLocalProvider(LocalContentColor provides Color(0xFFF5F1FF),LocalAccent provides accent,content=content)
  }
 }
 @Composable fun Backdrop(content:@Composable BoxScope.()->Unit){
  val motion=rememberInfiniteTransition(label="aurora");val phase by motion.animateFloat(0f,(2*PI).toFloat(),infiniteRepeatable(tween(20000,easing=LinearEasing)),label="drift")
- Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color(0xFF140C29),Navy,Color(0xFF061925))))){
+ Box(Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(Color(0xFF091A19),Navy,Color(0xFF031D20))))){
   Canvas(Modifier.fillMaxSize()){
    val w=size.width;val h=size.height;val center=Offset(w*(.75f+.14f*sin(phase)),h*.24f)
-   drawCircle(Brush.radialGradient(listOf(Violet.copy(alpha=.17f),Color.Transparent),center,w*.9f),w*.9f,center)
+   drawCircle(Brush.radialGradient(listOf(HackerGreen.copy(alpha=.09f),Color.Transparent),center,w*.9f),w*.9f,center)
    val blue=Offset(w*(.15f+.1f*cos(phase)),h*.77f);drawCircle(Brush.radialGradient(listOf(Cyan.copy(alpha=.09f),Color.Transparent),blue,w*.7f),w*.7f,blue)
    for(i in 0..5){val p=Path().apply{moveTo(-w*.2f,h*(.08f+i*.017f));cubicTo(w*.25f,h*(.28f+.02f*sin(phase)),w*.7f,h*.02f,w*1.15f,h*.28f)};drawPath(p,Violet.copy(alpha=.065f+i*.012f),style=Stroke(1.3f))}
    for(i in 0..34){val x=((i*37+11)%101)/100f*w;val y=((i*23+7)%103)/103f*h;drawCircle(if(i%4==0)Gold else Color(0xFFBBC3F2),if(i%3==0)1.6f else .8f,Offset(x,y),alpha=.12f+.12f*(1+sin(phase+i))/2)}
+
+   // A quiet perspective grid adds depth without competing with the content.
+   val horizon=h*.42f
+   for(i in -4..8){drawLine(HackerGreen.copy(alpha=.035f),Offset(w*.5f,horizon),Offset(w*i/4f,h),1f)}
+   for(i in 1..12){val y=horizon+(h-horizon)*(i*i)/144f;drawLine(HackerGreen.copy(alpha=.03f),Offset(0f,y),Offset(w,y),1f)}
   };content()
  }
 }
@@ -65,15 +71,10 @@ val LocalAccent=staticCompositionLocalOf{Violet}
  }
 }
 @Composable fun Shield(modifier:Modifier=Modifier){
- val transition=rememberInfiniteTransition(label="shield");val rise by transition.animateFloat(-4f,4f,infiniteRepeatable(tween(2400),RepeatMode.Reverse),label="float")
- Canvas(modifier.size(138.dp).graphicsLayer{translationY=rise}.semantics{contentDescription="USA FAVOR shield"}){
-  val w=size.width;val h=size.height
-  drawOval(Brush.radialGradient(listOf(Cyan.copy(alpha=.28f),Color.Transparent)),Offset(-w*.1f,h*.72f),Size(w*1.2f,h*.25f))
-  val p=Path().apply{moveTo(w*.5f,h*.04f);lineTo(w*.88f,h*.22f);lineTo(w*.83f,h*.63f);quadraticTo(w*.7f,h*.86f,w*.5f,h*.98f);quadraticTo(w*.3f,h*.86f,w*.17f,h*.63f);lineTo(w*.12f,h*.22f);close()}
-  drawPath(p,Violet.copy(alpha=.12f),style=Stroke(25f));drawPath(p,Brush.linearGradient(listOf(Color(0xFF44266F),Color(0xFF141C3F),Color(0xFF19586C))));drawPath(p,Brush.linearGradient(listOf(Color(0xFFE6C9FF),Violet,Cyan)),style=Stroke(5f))
-  val inner=Path().apply{moveTo(w*.5f,h*.15f);lineTo(w*.77f,h*.29f);lineTo(w*.72f,h*.59f);quadraticTo(w*.65f,h*.74f,w*.5f,h*.86f);quadraticTo(w*.35f,h*.74f,w*.28f,h*.59f);lineTo(w*.23f,h*.29f);close()}
-  clipPath(inner){drawRect(Color(0xFFF8F5FF));for(i in 0..7)drawRect(Color(0xFFE7426A),Offset(w*.2f,h*(.24f+i*.086f)),Size(w*.6f,h*.042f));drawRect(Color(0xFF18387F),Offset(w*.22f,h*.23f),Size(w*.3f,h*.33f));for(x in 0..3)for(y in 0..4)drawCircle(Color.White,w*.009f,Offset(w*(.27f+x*.061f),h*(.28f+y*.053f)))}
-  drawPath(inner,Gold.copy(alpha=.85f),style=Stroke(2f));drawLine(Color.White.copy(alpha=.5f),Offset(w*.14f,h*.23f),Offset(w*.48f,h*.07f),2f)
+ val transition=rememberInfiniteTransition(label="shield");val rise by transition.animateFloat(-3f,3f,infiniteRepeatable(tween(2600),RepeatMode.Reverse),label="float")
+ Box(modifier.size(138.dp).graphicsLayer{translationY=rise}.semantics{contentDescription="USA FAVOR shield"},contentAlignment=Alignment.Center){
+  Canvas(Modifier.matchParentSize()){drawCircle(Brush.radialGradient(listOf(HackerGreen.copy(alpha=.18f),Color.Transparent)))}
+  Image(painterResource(R.drawable.usa_shield_art),contentDescription=null,contentScale=ContentScale.Crop,modifier=Modifier.fillMaxSize().clip(CircleShape))
  }
 }
 @Composable fun Skyline(){
@@ -86,23 +87,24 @@ val LocalAccent=staticCompositionLocalOf{Violet}
  }
 }
 @Composable fun Glass(title:String?=null,content:@Composable ColumnScope.()->Unit){
- Column(Modifier.fillMaxWidth().padding(vertical=7.dp).shadow(16.dp,RoundedCornerShape(22.dp),ambientColor=Violet.copy(alpha=.1f),spotColor=Color.Black).clip(RoundedCornerShape(22.dp)).background(Brush.linearGradient(listOf(Color(0xDD24223E),Color(0xF00D1526)))).border(1.dp,Brush.linearGradient(listOf(Violet.copy(alpha=.48f),Color.White.copy(alpha=.12f),Cyan.copy(alpha=.15f))),RoundedCornerShape(22.dp)).padding(18.dp)){
-  if(title!=null){Text(title,color=Gold,fontWeight=FontWeight.SemiBold,fontSize=16.sp);Spacer(Modifier.height(13.dp))};content()
+ val cardAccent=LocalAccent.current
+ Column(Modifier.fillMaxWidth().padding(vertical=7.dp).shadow(16.dp,RoundedCornerShape(22.dp),ambientColor=Violet.copy(alpha=.1f),spotColor=Color.Black).clip(RoundedCornerShape(22.dp)).background(Brush.linearGradient(listOf(Color(0xF0182824),Color(0xF00A1512)))).border(1.dp,Brush.linearGradient(listOf(cardAccent.copy(alpha=.32f),Color.White.copy(alpha=.12f),Cyan.copy(alpha=.15f))),RoundedCornerShape(22.dp)).padding(18.dp)){
+  if(title!=null){Text(adminLabel(title),color=Gold,fontWeight=FontWeight.SemiBold,fontSize=16.sp);Spacer(Modifier.height(13.dp))};content()
  }
 }
 @Composable fun Action(label:String,enabled:Boolean=true,onClick:()->Unit){
  val accent=LocalAccent.current;val gold=accent==Gold;val interaction=remember{MutableInteractionSource()};val pressed by interaction.collectIsPressedAsState();val scale by animateFloatAsState(if(pressed&&enabled).978f else 1f,label="button press");val depth by animateDpAsState(if(pressed&&enabled)4.dp else 0.dp,label="button depth")
  Box(Modifier.fillMaxWidth().padding(vertical=7.dp).heightIn(min=60.dp).graphicsLayer{scaleX=scale;scaleY=scale;alpha=if(enabled)1f else .45f}){
-  Box(Modifier.matchParentSize().padding(top=5.dp).background(if(gold)Color(0xFF795014)else Color(0xFF34105A),RoundedCornerShape(15.dp)))
-  Box(Modifier.fillMaxWidth().offset(y=depth).heightIn(min=54.dp).shadow(if(pressed)2.dp else 10.dp,RoundedCornerShape(15.dp),ambientColor=accent.copy(alpha=.3f),spotColor=accent.copy(alpha=.35f)).clip(RoundedCornerShape(15.dp)).background(Brush.verticalGradient(if(gold)listOf(Color(0xFFFFE8A1),Gold,Color(0xFFDFAE44))else listOf(Color(0xFFC881FF),Color(0xFF933AF1),Color(0xFF6B1FC5)))).border(1.dp,if(gold)Color(0xFFFFEFC3)else Color(0xFFDDAAFF),RoundedCornerShape(15.dp)).clickable(enabled=enabled,interactionSource=interaction,indication=LocalIndication.current,role=Role.Button,onClick=onClick).padding(horizontal=16.dp,vertical=15.dp),contentAlignment=Alignment.Center){Row(verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.Center){Icon(actionIcon(label),contentDescription=null,tint=if(gold)Color(0xFF221706)else Color.White,modifier=Modifier.size(19.dp));Spacer(Modifier.width(9.dp));Text(label,fontWeight=FontWeight.Bold,color=if(gold)Color(0xFF221706)else Color.White,fontSize=14.sp,letterSpacing=.6.sp)}}
+  Box(Modifier.matchParentSize().padding(top=5.dp).background(if(gold)Color(0xFF795014)else Color(0xFF125337),RoundedCornerShape(15.dp)))
+  Box(Modifier.fillMaxWidth().offset(y=depth).heightIn(min=54.dp).shadow(if(pressed)2.dp else 10.dp,RoundedCornerShape(15.dp),ambientColor=accent.copy(alpha=.3f),spotColor=accent.copy(alpha=.35f)).clip(RoundedCornerShape(15.dp)).background(Brush.verticalGradient(if(gold)listOf(Color(0xFFFFE8A1),Gold,Color(0xFFDFAE44))else listOf(Color(0xFFB6FFD3),HackerGreen,Color(0xFF2CCF80)))).border(1.dp,if(gold)Color(0xFFFFEFC3)else Color(0xFFBDFFDA),RoundedCornerShape(15.dp)).clickable(enabled=enabled,interactionSource=interaction,indication=LocalIndication.current,role=Role.Button,onClick=onClick).padding(horizontal=16.dp,vertical=15.dp),contentAlignment=Alignment.Center){Row(verticalAlignment=Alignment.CenterVertically,horizontalArrangement=Arrangement.Center){Icon(actionIcon(label),contentDescription=null,tint=if(gold)Color(0xFF221706)else Color(0xFF042C18),modifier=Modifier.size(19.dp));Spacer(Modifier.width(9.dp));Text(adminLabel(label),fontWeight=FontWeight.Bold,color=if(gold)Color(0xFF221706)else Color(0xFF042C18),fontSize=14.sp,letterSpacing=.6.sp)}}
  }
 }
 @Composable fun Field(label:String,value:String,onValueChange:(String)->Unit,secret:Boolean=false){
  var visible by remember{mutableStateOf(false)}
- OutlinedTextField(value,onValueChange,label={Text(label)},modifier=Modifier.fillMaxWidth().padding(vertical=6.dp),shape=RoundedCornerShape(15.dp),singleLine=!listOf("body","message","help","instructions").any{label.contains(it,true)},maxLines=4,textStyle=TextStyle(color=Color(0xFFF5F1FF),fontSize=16.sp),keyboardOptions=KeyboardOptions(keyboardType=if(secret)KeyboardType.Password else if(label.contains("Email",true))KeyboardType.Email else KeyboardType.Text),colors=OutlinedTextFieldDefaults.colors(focusedBorderColor=LocalAccent.current,unfocusedBorderColor=Color(0xFF66607D),focusedContainerColor=Color(0x55101629),unfocusedContainerColor=Color(0x55101629)),visualTransformation=if(secret&&!visible)PasswordVisualTransformation()else VisualTransformation.None,trailingIcon=if(secret){{IconButton(onClick={visible=!visible}){Icon(if(visible)Icons.Outlined.VisibilityOff else Icons.Outlined.Visibility,contentDescription=if(visible)"Hide password"else"Show password",tint=Gold)}}}else null)
+ OutlinedTextField(value,onValueChange,label={Text(adminLabel(label))},modifier=Modifier.fillMaxWidth().padding(vertical=6.dp),shape=RoundedCornerShape(15.dp),singleLine=!listOf("body","message","help","instructions").any{label.contains(it,true)},maxLines=4,textStyle=TextStyle(color=Color(0xFFF5F1FF),fontSize=16.sp),keyboardOptions=KeyboardOptions(keyboardType=if(secret)KeyboardType.Password else if(label.contains("Email",true))KeyboardType.Email else KeyboardType.Text),colors=OutlinedTextFieldDefaults.colors(focusedBorderColor=LocalAccent.current,unfocusedBorderColor=Color(0xFF66607D),focusedContainerColor=Color(0x55101629),unfocusedContainerColor=Color(0x55101629)),visualTransformation=if(secret&&!visible)PasswordVisualTransformation()else VisualTransformation.None,trailingIcon=if(secret){{IconButton(onClick={visible=!visible}){Icon(if(visible)Icons.Outlined.VisibilityOff else Icons.Outlined.Visibility,contentDescription=if(visible)"Hide password"else"Show password",tint=Gold)}}}else null)
 }
-@Composable fun Fact(name:String,value:String){Row(Modifier.fillMaxWidth().padding(vertical=8.dp),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.CenterVertically){Text(name,color=Color(0xFFAEB6CD),fontSize=13.sp,modifier=Modifier.weight(1f));Text(value,color=Color(0xFFF2F0FC),fontWeight=FontWeight.Medium,fontSize=13.sp,modifier=Modifier.weight(1.1f))}}
-@Composable fun PageTitle(title:String,subtitle:String="POWERED BY B5 STUDIOS"){Column(Modifier.fillMaxWidth().padding(vertical=15.dp)){Text(subtitle,color=Gold,fontSize=10.sp,letterSpacing=2.sp);Spacer(Modifier.height(5.dp));Text(title,color=Color(0xFFF4F1FF),fontSize=27.sp,fontWeight=FontWeight.Bold)}}
+@Composable fun Fact(name:String,value:String){Row(Modifier.fillMaxWidth().padding(vertical=8.dp),horizontalArrangement=Arrangement.SpaceBetween,verticalAlignment=Alignment.CenterVertically){Text(adminLabel(name),color=Color(0xFFAEB6CD),fontSize=13.sp,modifier=Modifier.weight(1f));Text(adminLabel(value),style=TextStyle(shadow=Shadow(HackerGreen.copy(alpha=.25f),Offset(0f,1f),8f)),color=HackerGreen,fontWeight=FontWeight.SemiBold,fontSize=13.sp,modifier=Modifier.weight(1.1f))}}
+@Composable fun PageTitle(title:String,subtitle:String="POWERED BY B5 STUDIOS"){Column(Modifier.fillMaxWidth().padding(vertical=15.dp)){Text(adminLabel(subtitle),color=LocalAccent.current,fontSize=10.sp,letterSpacing=2.sp);Spacer(Modifier.height(5.dp));Text(adminLabel(title),color=Color(0xFFF4F1FF),fontSize=27.sp,fontWeight=FontWeight.Bold)}}
 @Composable fun PowerButton(state:String,onClick:()->Unit){
  val connected=state=="Connected";val transition=rememberInfiniteTransition(label="power");val pulse by transition.animateFloat(.7f,1f,infiniteRepeatable(tween(1700),RepeatMode.Reverse),label="power glow");val angle by transition.animateFloat(0f,360f,infiniteRepeatable(tween(11000,easing=LinearEasing)),label="power orbit");val c by animateColorAsState(if(connected)Color(0xFF4EFF9A)else if(state=="Error")Color(0xFFFF8192)else Violet,label="status color")
  val interaction=remember{MutableInteractionSource()};val pressed by interaction.collectIsPressedAsState();val press by animateFloatAsState(if(pressed).95f else 1f,label="power depth")
@@ -120,14 +122,24 @@ val LocalAccent=staticCompositionLocalOf{Violet}
  val accent=LocalAccent.current
  Row(Modifier.fillMaxWidth().background(Brush.verticalGradient(listOf(Color(0xF0141229),Color(0xFF070D1C))),RoundedCornerShape(topStart=25.dp,topEnd=25.dp)).border(1.dp,Violet.copy(alpha=.25f),RoundedCornerShape(topStart=25.dp,topEnd=25.dp)).navigationBarsPadding().padding(horizontal=6.dp,vertical=10.dp),horizontalArrangement=Arrangement.SpaceAround){labels.forEachIndexed{i,label->
   val active=i==selected;val scale by animateFloatAsState(if(active)1.07f else 1f,label="navigation")
-  Column(Modifier.weight(1f).graphicsLayer{scaleX=scale;scaleY=scale}.clip(RoundedCornerShape(14.dp)).background(if(active)Brush.verticalGradient(listOf(accent.copy(alpha=.22f),Color.Transparent))else Brush.verticalGradient(listOf(Color.Transparent,Color.Transparent))).selectableCompat(active){onSelect(i)}.padding(vertical=8.dp),horizontalAlignment=Alignment.CenterHorizontally){Icon(icons[i],label,tint=if(active)accent else Color(0xFF9BA7C6),modifier=Modifier.size(24.dp));Spacer(Modifier.height(5.dp));Text(label,color=if(active)Color.White else Color(0xFFAEB6CD),fontSize=10.sp,fontWeight=if(active)FontWeight.Bold else FontWeight.Normal)}
+  Column(Modifier.weight(1f).graphicsLayer{scaleX=scale;scaleY=scale}.clip(RoundedCornerShape(14.dp)).background(if(active)Brush.verticalGradient(listOf(accent.copy(alpha=.22f),Color.Transparent))else Brush.verticalGradient(listOf(Color.Transparent,Color.Transparent))).selectableCompat(active){onSelect(i)}.padding(vertical=8.dp),horizontalAlignment=Alignment.CenterHorizontally){Icon(icons[i],label,tint=if(active)accent else Color(0xFF9BA7C6),modifier=Modifier.size(24.dp));Spacer(Modifier.height(5.dp));Text(adminLabel(label),color=if(active)Color.White else Color(0xFFAEB6CD),fontSize=10.sp,fontWeight=if(active)FontWeight.Bold else FontWeight.Normal)}
  }}
 }
 private fun Modifier.selectableCompat(value:Boolean,onClick:()->Unit)=this.semantics{selected=value}.clickable(role=Role.Tab,onClick=onClick)
 
-@Composable fun CustomSections(items:List<Map<String,Any?>>,target:String,open:(String)->Unit){
- items.filter{it["enabled"]==true&&it.str("target")==target}.forEach { item->
-  Glass{Row(verticalAlignment=Alignment.CenterVertically){val icon=when(item.str("icon")){"support"->Icons.Outlined.SupportAgent;"shield"->Icons.Outlined.VerifiedUser;"globe"->Icons.Outlined.Public;"message"->Icons.Outlined.ChatBubbleOutline;else->Icons.Outlined.Info};Icon(icon,null,tint=Cyan,modifier=Modifier.size(22.dp));Spacer(Modifier.width(10.dp));Text(item.str("title"),color=Gold,fontWeight=FontWeight.Bold)};if(item.str("body").isNotBlank()){Spacer(Modifier.height(10.dp));Text(item.str("body"),color=Color(0xFFDAD9EB),fontSize=13.sp)};if(item.str("url").isNotBlank())Action("OPEN LINK"){open(item.str("url"))}}
+@Composable fun CustomSections(items:List<Map<String,Any?>>,target:String,open:(String)->Unit,perform:(String,Map<String,Any?>)->Unit={_,_->}){
+ items.filter{it["enabled"]==true&&it.str("target")==target}.forEach{item->
+  Glass{
+   Row(verticalAlignment=Alignment.CenterVertically){
+    val icon=when(item.str("icon")){"support"->Icons.Outlined.SupportAgent;"shield"->Icons.Outlined.VerifiedUser;"globe"->Icons.Outlined.Public;"message"->Icons.Outlined.ChatBubbleOutline;else->Icons.Outlined.Info}
+    Icon(icon,null,tint=Cyan,modifier=Modifier.size(22.dp));Spacer(Modifier.width(10.dp));Text(item.str("title"),color=Gold,fontWeight=FontWeight.Bold)
+   }
+   if(item.str("body").isNotBlank()){Spacer(Modifier.height(10.dp));Text(item.str("body"),color=Color(0xFFDAD9EB),fontSize=13.sp)}
+   val action=SectionPolicy.action(item)
+   if(action!="none")Action(item.str("button_label").ifBlank{if(action=="code")"OPEN TOOL"else if(action=="link")"OPEN LINK"else action.replace('_',' ').uppercase()}){
+    if(action=="link")open(item.str("url"))else perform(action,item)
+   }
+  }
  }
 }
 
@@ -136,20 +148,22 @@ private fun Modifier.selectableCompat(value:Boolean,onClick:()->Unit)=this.seman
  val transition=rememberInfiniteTransition(label="cyber shield")
  val rotation by transition.animateFloat(0f,360f,infiniteRepeatable(tween(if(moving)4500 else 18000,easing=LinearEasing)),label="security orbit")
  val pulse by transition.animateFloat(.65f,1f,infiniteRepeatable(tween(1500),RepeatMode.Reverse),label="security pulse")
- val accent by animateColorAsState(if(connected)Color(0xFF44FFA2)else if(state=="Error")Color(0xFFFF8096)else Violet,label="security state")
+ val accent by animateColorAsState(if(connected)Color(0xFF44FFA2)else if(state=="Error")Color(0xFFFF8096)else HackerGreen,label="security state")
  val interaction=remember{MutableInteractionSource()};val pressed by interaction.collectIsPressedAsState();val scale by animateFloatAsState(if(pressed).95f else 1f,label="shield press")
  Box(Modifier.padding(vertical=14.dp).size(256.dp).graphicsLayer{scaleX=scale;scaleY=scale}.semantics{contentDescription="VPN connection: $state"}.clickable(interactionSource=interaction,indication=null,role=Role.Button,onClick=onClick),contentAlignment=Alignment.Center){
   Canvas(Modifier.fillMaxSize()){
    val w=size.width;val h=size.height
    drawCircle(Brush.radialGradient(listOf(accent.copy(alpha=.27f*pulse),Color.Transparent)),w*.5f)
    drawOval(Color.Black.copy(alpha=.6f),Offset(w*.16f,h*.79f),Size(w*.68f,h*.12f))
-   drawCircle(Color(0xFF151B30),w*.395f,Offset(w*.5f,h*.52f));drawCircle(accent.copy(alpha=.22f),w*.4f,Offset(w*.5f,h*.5f),style=Stroke(1.3.dp.toPx()))
+   drawCircle(Color(0xFF020908),w*.401f,Offset(w*.5f,h*.54f))
+   drawCircle(Brush.radialGradient(listOf(Color(0xFF29483A),Color(0xFF0B1D1B),Color(0xFF020B0C)),center=Offset(w*.32f,h*.22f),radius=w*.8f),w*.395f,Offset(w*.5f,h*.5f))
+   drawArc(Color.White.copy(alpha=.25f),205f,125f,false,Offset(w*.105f,h*.105f),Size(w*.79f,h*.79f),style=Stroke(2.dp.toPx()));drawCircle(accent.copy(alpha=.22f),w*.4f,Offset(w*.5f,h*.5f),style=Stroke(1.3.dp.toPx()))
    rotate(rotation){for(i in 0..2)drawArc(Brush.sweepGradient(listOf(Color.Transparent,accent,Color.Transparent)),i*120f,62f,false,Offset(w*.085f,h*.085f),Size(w*.83f,h*.83f),style=Stroke(if(connected)3.dp.toPx() else 1.5.dp.toPx()))}
    for(i in 0..23){val a=i*PI/12;val r=w*.465f;drawLine(accent.copy(alpha=if(i%3==0).65f else .2f),Offset(w*.5f+cos(a).toFloat()*r,h*.5f+sin(a).toFloat()*r),Offset(w*.5f+cos(a).toFloat()*(r-7),h*.5f+sin(a).toFloat()*(r-7)),1.7f)}
   }
   Image(painterResource(R.drawable.usa_shield_art),contentDescription=null,contentScale=ContentScale.Crop,modifier=Modifier.size(182.dp).clip(CircleShape).graphicsLayer{rotationX=if(pressed)4f else 0f;rotationY=if(pressed)-4f else 0f})
-  Box(Modifier.align(Alignment.BottomCenter).padding(bottom=7.dp).shadow(8.dp,RoundedCornerShape(9.dp)).background(Brush.verticalGradient(listOf(Color(0xFF283047),Color(0xFF11182B))),RoundedCornerShape(9.dp)).border(1.dp,accent.copy(alpha=.5f),RoundedCornerShape(9.dp)).padding(horizontal=13.dp,vertical=6.dp)){
-   Row(verticalAlignment=Alignment.CenterVertically){Icon(Icons.Outlined.PowerSettingsNew,null,tint=accent,modifier=Modifier.size(13.dp));Spacer(Modifier.width(6.dp));Text(if(connected)"DISCONNECT"else if(state=="Disconnecting")"DISCONNECTING"else if(moving)"CANCEL CONNECTION"else"CONNECT",fontSize=9.sp,color=accent,letterSpacing=1.sp)}
+  Box(Modifier.align(Alignment.BottomCenter).padding(bottom=2.dp).width(200.dp).shadow(12.dp,RoundedCornerShape(24.dp),ambientColor=accent.copy(alpha=.25f),spotColor=accent.copy(alpha=.2f)).background(Brush.verticalGradient(listOf(Color(0xFF143E30),Color(0xFF081E16))),RoundedCornerShape(24.dp)).border(1.dp,accent.copy(alpha=.65f),RoundedCornerShape(24.dp)).padding(horizontal=18.dp,vertical=12.dp),contentAlignment=Alignment.Center){
+   Row(verticalAlignment=Alignment.CenterVertically){Icon(Icons.Outlined.PowerSettingsNew,null,tint=accent,modifier=Modifier.size(21.dp));Spacer(Modifier.width(6.dp));Text(if(connected)"DISCONNECT"else if(state=="Disconnecting")"DISCONNECTING"else if(moving)"CANCEL CONNECTION"else"CONNECT",fontSize=12.sp,fontWeight=FontWeight.Bold,color=accent,letterSpacing=1.sp)}
   }
  }
 }
@@ -190,7 +204,7 @@ private fun actionIcon(label:String):ImageVector {
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable fun IconAction(label:String,enabled:Boolean=true,onClick:()->Unit){
- TooltipBox(positionProvider=TooltipDefaults.rememberPlainTooltipPositionProvider(),tooltip={PlainTooltip{Text(label)}},state=rememberTooltipState()){
+ TooltipBox(positionProvider=TooltipDefaults.rememberPlainTooltipPositionProvider(),tooltip={PlainTooltip{Text(adminLabel(label))}},state=rememberTooltipState()){
   IconButton(onClick=onClick,enabled=enabled){Icon(actionIcon(label),contentDescription=label,tint=if(enabled)LocalAccent.current else Color.Gray,modifier=Modifier.size(23.dp))}
  }
 }

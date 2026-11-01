@@ -1,3 +1,56 @@
+# Current validation — 1.3.0-studio
+
+| Check | Result |
+|---|---|
+| App identity | Client launcher label USA VPN; package com.usafavor.client unchanged. Admin com.b5studios.usafavor. Both versionCode 5 / 1.3.0-studio |
+| Android tests | 31 passed, zero failures/errors/skips: 15 native Compose renders and 16 configuration/content/package-policy JVM cases |
+| Provider bridge | 10 passed, zero failures/skips: license/expiry/binding/readiness/maintenance policy and actual local callable/HTTP failure paths |
+| Debug APK build | Both Kotlin/Compose applications built with the checksum-pinned Gradle wrapper; current build log in Validation/studio-1.3 |
+| Lint | Both apps: zero errors and zero warnings in final Android Lint reports |
+| Activation | First valid unused code binds atomically to one anonymous installation; subsequent restoration preserves original expiry. Current live Firebase activation not verified |
+| Firestore tests | 26 defined; execution remains blocked by the official emulator download network policy. Historical CI results below do not certify these new rules |
+| Arabic and owner unlock | Arabic/English preference, RTL and biometric/device-credential unlock of an already authorized owner session implemented; sensor/system-auth acceptance on a physical phone remains untested |
+| Sections and packages | Native actions, isolated HTML/CSS/JS tools and validated JSON import implemented; real-device WebView execution not exercised by Compose snapshots |
+| Updates | In-app HTTPS download, bounded redirects/size, SHA-256, package/version/current signing-key checks and user-confirmed Android installer implemented; physical installation/relaunch not tested |
+| Package/signature/integrity | Verify current APK metadata, signatures, ZIP checksums and release SHA256SUMS before distributing; Debug keys differ from the old preexisting Downloads |
+| Live service | No authenticated Firebase deployment, supported Aura artifact/account or live VPN/US egress supplied or validated. The default Client has no provider engine and stays disconnected |
+
+Current verification is local build/policy/render evidence. It is not deployed licensing acceptance, a physical-device installation/biometric test or provider entitlement/VPN leak testing. See STUDIO.md for exact capabilities and boundaries. The optional Aura SDK source requires a supported partner artifact and version-specific validation; no APK/download/config package can add an absent native SDK automatically.
+
+---
+
+## Historical 1.2.0 and 1.1.0 evidence
+
+# Current validation — 1.2.0-provider — 2026-11-01
+
+| Check | Current result |
+|---|---|
+| Android Debug APKs | Both compiled; unchanged IDs com.b5studios.usafavor and com.usafavor.client, versionCode 3 / 1.2.0-provider |
+| Android lint | Both apps: zero issues |
+| Native UI rendering | 9 passed: 4 Admin, 3 Client, 2 Shared; actual Compose screenshots, not physical-device acceptance |
+| Provider settings JVM policy | 4 passed; missing/unverified provider fails closed, only enabled USA catalog locations offered |
+| Optional provider Functions | 9 passed: authorization/expiry/device/disabled-location policy and real local callable/HTTP rejection paths; no live Firestore/provider access claimed |
+| Retained gateway helper tests | 9 passed; legacy Python helpers only, not a live gateway |
+| Firebase registrations | Original public Android registrations restored locally from supplied source archive; exact project/package/generated resources verified without printing key values |
+| Firestore rules tests | 22 defined; current run **blocked before execution** by proxy denial downloading the official emulator from storage.googleapis.com; previous 16-pass CI evidence below is historical |
+| Rules parity | Canonical Firestore rules match app-packaged copy byte for byte |
+| APK integrity | ZIP integrity, checksums and APK v2 signatures verified; no private .ovpn/.key/.pem/.p12/.pfx entries |
+| Signing continuity | New local Debug certificate differs from old Downloads APK; in-place update requires original signing key. Do not uninstall a licensed production installation merely to test these APKs |
+| Optional Aura SDK adapter | Source provided; not compiled or verified because no current authorized SDK artifact/account was supplied; old linked public SDK repos return not-found |
+| Live Firebase deployment/activation | Not performed; no authenticated project administrator runtime supplied |
+| Real VPN / USA egress / per-app leaks / provider expiry enforcement | Not verified; no authorized provider connection. UI deliberately shows Provider not connected |
+| Production signing | Not supplied; artifacts are Debug test APKs |
+
+Fresh build outputs are in artifacts/. Four review images are in artifacts/previews/. Current logs and test counts are in Validation/provider-1.2/. Existing Downloads remain historical and were not overwritten.
+
+The implemented Firebase fixes add licensed reads of the new provider settings document, restrict Android location writes to the trusted USA catalog, keep grants server-only, and stop swallowing genuine licenseInfo permission errors as “not activated.” These changes still need rule publication, correct admin claims and App Check registration on the live project. A saved network-domain draft does not change runtime access; apply the saved storage.googleapis.com allowance in environment settings to run the real Firestore suite, then rerun its documented command.
+
+See PROVIDER-SETUP.md for documented partner authorization, SDK and provider-side entitlement enforcement prerequisites. No active-session expiry/revocation guarantee is inferred from the basic OAuth callback. No master provider credential is shipped in either app.
+
+---
+
+## Historical 1.1.0 delivery (does not validate the current revision)
+
 # Verified delivery — 1.1.0-spark — 2026-11-01
 
 | Check | Actual result |

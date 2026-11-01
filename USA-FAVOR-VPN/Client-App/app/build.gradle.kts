@@ -4,7 +4,7 @@ if (file("google-services.json").exists()) apply(plugin="com.google.gms.google-s
 android {
  ndkVersion="28.0.13004108"
  namespace="com.usafavor.client"; compileSdk=35
- defaultConfig { applicationId="com.usafavor.client"; minSdk=26; targetSdk=35; versionCode=2; versionName="1.1.0-spark"; resourceConfigurations += "en" }
+ defaultConfig { applicationId="com.usafavor.client"; minSdk=26; targetSdk=35; versionCode=5; versionName="1.3.0-studio"; resourceConfigurations += "en" }
  signingConfigs { create("production") {
   System.getenv("B5_KEYSTORE_FILE")?.let { storeFile=file(it) }
   storePassword=System.getenv("B5_KEYSTORE_PASSWORD")
@@ -22,7 +22,7 @@ android {
  kotlinOptions { jvmTarget="17" }
  packaging { resources.excludes += setOf("META-INF/AL2.0", "META-INF/LGPL2.1"); jniLibs.useLegacyPackaging=true }
 }
-dependencies { implementation(project(":Shared")) ; implementation(project(":OpenVPN-Core")) }
+dependencies { implementation(project(":Shared")) ;  }
 
 val validateProduction by tasks.registering {
  doLast {
@@ -39,4 +39,13 @@ dependencies {
  testImplementation("app.cash.paparazzi:paparazzi:1.3.5")
  testImplementation("junit:junit:4.13.2")
  testImplementation("org.mockito:mockito-core:5.18.0")
+}
+
+// Obtain a supported, pinned coordinate and repository from your authorized Aura partner agreement.
+// Never add master API credentials to this build or the client application.
+val auraSdk = providers.gradleProperty("auraSdkCoordinate").orNull
+if (auraSdk != null) {
+ require(!auraSdk.contains("+") && !auraSdk.contains("SNAPSHOT")) { "Use a partner-approved pinned SDK version" }
+ android.sourceSets.getByName("main").java.srcDir("src/aura/java")
+ dependencies.add("implementation", auraSdk)
 }

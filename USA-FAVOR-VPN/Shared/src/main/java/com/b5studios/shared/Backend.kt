@@ -23,7 +23,12 @@ class Backend(private val context: Context) {
     private val spark by lazy { SparkBackend(context,auth) }
     suspend fun call(name:String,data:Map<String,Any?> = emptyMap()):Map<String,Any?> {
         require(configured) { "Firebase configuration missing" }
-        return spark.call(name,data)
+        return try { spark.call(name,data) } catch(e:com.google.firebase.firestore.FirebaseFirestoreException) {
+            if(e.code==com.google.firebase.firestore.FirebaseFirestoreException.Code.PERMISSION_DENIED) {
+                throw IllegalStateException("Firebase denied $name. Check the usa-favor (default) database rules, this app’s App Check registration, and the signed-in account. Admin actions require the admin:true claim; sign out and back in after a role change.",e)
+            }
+            throw e
+        }
     }
     fun watchLicense(onInvalid:(String)->Unit):ListenerRegistration = spark.watchLicense(onInvalid)
 

@@ -1,0 +1,5 @@
+{
+  "schema_version": 1,
+  "kind": "update",
+  "payload": {"enabled": false, "latest_version_code": 6, "minimum_version": 1, "required": false, "apk_url": "", "apk_sha256": "", "message": "A new version is available."}
+}

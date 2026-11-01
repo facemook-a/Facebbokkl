@@ -4,3 +4,5 @@
 -keep class de.blinkt.openvpn.api.** { *; }
 -keepclasseswithmembernames,includedescriptorclasses class * { native <methods>; }
 -keepattributes Signature,InnerClasses,EnclosingMethod,*Annotation*
+
+-keep class com.usafavor.client.AuraProvider { public *; }

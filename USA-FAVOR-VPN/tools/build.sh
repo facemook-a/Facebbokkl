@@ -18,4 +18,4 @@ cp Admin-App/app/build/outputs/apk/debug/Admin-App-debug.apk artifacts/USA-Admin
 cp Client-App/app/build/outputs/apk/debug/Client-App-arm64-v8a-debug.apk artifacts/USA-Favor.apk
 cp Client-App/app/build/outputs/apk/debug/Client-App-x86_64-debug.apk artifacts/USA-Favor-x86_64.apk
 python3 tools/verify-firebase.py
-sha256sum artifacts/USA-Admin.apk artifacts/USA-Favor.apk > artifacts/SHA256SUMS
+sha256sum artifacts/USA-Admin.apk artifacts/USA-Favor.apk artifacts/USA-Favor-x86_64.apk > artifacts/SHA256SUMS

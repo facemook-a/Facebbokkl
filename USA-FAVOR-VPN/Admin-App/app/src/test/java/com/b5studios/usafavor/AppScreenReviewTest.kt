@@ -39,7 +39,11 @@ class AppScreenReviewTest {
  }
  private fun panel(name:String,tab:Int,content:@Composable ()->Unit){render(name){Backdrop{Scaffold(containerColor=Color.Transparent,bottomBar={PremiumNav(tab,admin=true){}}){padding->Column(Modifier.fillMaxSize().padding(padding).verticalScroll(rememberScrollState()).padding(horizontal=20.dp)){Row(verticalAlignment=Alignment.CenterVertically){Box(Modifier.weight(1f)){Brand()};TextButton(onClick={}){Text("Refresh")};TextButton(onClick={}){Text("Sign out")}};content();Spacer(Modifier.height(24.dp))}}}}}
  @Test fun licenseStudio(){val state=AdminState(ready=true);val m=model(state);panel("admin_license_studio",1){LicensePage(state,m)}}
- @Test fun vpnControlCenter(){val state=AdminState(ready=true);val m=model(state);panel("admin_vpn_control_center",2){ServerPage(state,m){}}}
+ @Test fun vpnConnectionSettings(){val state=AdminState(ready=true);val m=model(state);panel("admin_vpn_connection_settings",2){VpnSettingsPage(state,m)}}
  @Test fun login(){val m=model(AdminState());render("admin_login"){AdminScreen(m)}}
  @Test fun dashboardBeforeSetup(){val m=model(AdminState(ready=true));render("admin_dashboard_empty"){AdminScreen(m)}}
+ @Test fun sectionBuilder(){val state=AdminState(ready=true);val m=model(state);panel("admin_sections_builder",3){SectionEditor(state,m)}}
+ @Test fun updateEditor(){val state=AdminState(ready=true);val m=model(state);panel("admin_update_editor",3){UpdateEditor(state,m)}}
+ @Test fun arabicProvider(){val state=AdminState(ready=true);val m=model(state);render("admin_arabic_provider"){CompositionLocalProvider(LocalAdminLanguage provides "ar",androidx.compose.ui.platform.LocalLayoutDirection provides androidx.compose.ui.unit.LayoutDirection.Rtl){Backdrop{androidx.compose.foundation.layout.Column(androidx.compose.ui.Modifier.padding(20.dp)){VpnSettingsPage(state,m)}}}}}
+ @Test fun savedOwnerUnlock(){val m=model(AdminState(savedSession=true));render("admin_owner_unlock"){AdminScreen(m)}}
 }

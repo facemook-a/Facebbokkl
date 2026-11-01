@@ -1,0 +1,4 @@
+{
+  "functions": [{"source":"provider-functions","codebase":"vpn-provider","runtime":"nodejs22"}],
+  "firestore":{"rules":"firestore.rules","indexes":"firestore.indexes.json"}
+}

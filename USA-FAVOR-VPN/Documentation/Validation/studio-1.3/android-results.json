@@ -1,0 +1,46 @@
+{
+  "TEST-com.b5studios.shared.ProviderConnectionDraftTest": {
+    "tests": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "TEST-com.b5studios.shared.DesignReviewTest": {
+    "tests": 2,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "TEST-com.b5studios.shared.StudioPackageTest": {
+    "tests": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "TEST-com.b5studios.shared.ContentPolicyTest": {
+    "tests": 6,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "TEST-com.b5studios.shared.ProviderSettingsTest": {
+    "tests": 4,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "TEST-com.b5studios.usafavor.AppScreenReviewTest": {
+    "tests": 8,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "Admin-App_lint": [],
+  "TEST-com.usafavor.client.AppScreenReviewTest": {
+    "tests": 5,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "Client-App_lint": []
+}

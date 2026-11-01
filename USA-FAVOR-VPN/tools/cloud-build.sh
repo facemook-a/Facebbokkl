@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd -- "$(dirname -- "$0")/.."
-export JAVA_HOME=/workspace/toolchains/jdk-21.0.7+6
-export ANDROID_HOME=/workspace/toolchains/android-sdk
-export GRADLE_USER_HOME=/workspace/toolchains/gradle-home
+export JAVA_HOME="${JAVA_HOME:-/workspace/toolchains/jdk-21.0.9+10}"
+export ANDROID_HOME="${ANDROID_HOME:-/workspace/toolchains/android-sdk}"
+export GRADLE_USER_HOME="${GRADLE_USER_HOME:-/workspace/toolchains/gradle-home}"
 args=()
+if [[ -f /etc/ssl/certs/java/cacerts ]]; then
+ args+=("-Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts")
+fi
 if [[ -n ${HTTPS_PROXY:-} ]]; then
  mapfile -t proxy_parts < <(python3 - <<'PY'
 import os,urllib.parse
@@ -17,4 +20,5 @@ PY
   args+=("-Dhttps.proxyHost=${proxy_parts[0]}" "-Dhttps.proxyPort=${proxy_parts[1]}" "-Dhttp.proxyHost=${proxy_parts[0]}" "-Dhttp.proxyPort=${proxy_parts[1]}")
  fi
 fi
+export JAVA_TOOL_OPTIONS="${JAVA_TOOL_OPTIONS:-} ${args[*]}"
 ./tools/build.sh "${args[@]}" "$@"

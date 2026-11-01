@@ -35,7 +35,7 @@ class SparkBackend(private val context:Context,private val auth:FirebaseAuth) {
     private fun days(v:Any?):Int {val n=(v as? Number)?.toInt()?:error("Choose a duration");require(n in 1..3650){"Duration must be 1–3650 days"};return n}
     private suspend fun read(path:String)=db.document(path).get(Source.SERVER).await()
     private suspend fun bound():DocumentSnapshot {
-        val b=read("bindings/$uid");check(b.exists()){ "Activate your license first." }
+        val b=read("bindings/$uid");if(!b.exists())throw LicenseNotActivated()
         val l=read("licenses/${b.getString("license_id")}");check(l.exists()&&l.getString("device_binding_id")==uid){"Device binding was reset. Contact the administrator."}
         check(usable(l.data!!)){if(l.getBoolean("is_active")!=true)"This license has been banned by the administrator." else "Your subscription has expired."};return l
     }
@@ -55,7 +55,7 @@ class SparkBackend(private val context:Context,private val auth:FirebaseAuth) {
         "dashboard"->dashboard()
         "listDeviceConflicts"->mapOf("items" to db.collection("device_conflicts").orderBy("attempted_at",Query.Direction.DESCENDING).limit(100).get(Source.SERVER).await().documents.map{normalized(it.data).obj()+mapOf("id" to it.id)})
         "listSessions"->listDevices(identifier(d["license_id"]))
-        "adminConfiguration"->mapOf("settings" to read("configuration/client").data.orEmpty(),"social" to (read("configuration/social").get("items")?:emptyList<Any>()),"sections" to (read("configuration/sections").get("items")?:emptyList<Any>()),"layout" to read("configuration/admin_layout").data.orEmpty(),"profiles" to db.collection("profile_documents").orderBy("created_at",Query.Direction.DESCENDING).limit(100).get(Source.SERVER).await().documents.map{normalized(it.data).obj()+mapOf("id" to it.id)})
+        "adminConfiguration"->mapOf("settings" to read("configuration/client").data.orEmpty(),"social" to (read("configuration/social").get("items")?:emptyList<Any>()),"sections" to (read("configuration/sections").get("items")?:emptyList<Any>()),"layout" to read("configuration/admin_layout").data.orEmpty(),"provider" to read("configuration/vpn_provider").data.orEmpty(),"provider_request" to read("configuration/admin_provider_request").data.orEmpty(),"app_update" to read("configuration/app_update").data.orEmpty())
         "saveProfileDocument"->{val text=d["text"].toString();val summary=importOvpn(text);val name=d["name"].toString().take(100);require(name.lowercase().endsWith(".ovpn")){"Choose an .ovpn file"};val ref=db.collection("profile_documents").document();ref.set(mapOf("name" to name,"public_profile" to text,"summary" to summary,"sha256" to hash(text),"created_at" to FieldValue.serverTimestamp(),"created_by" to uid)).await();audit("profile.import",ref.id);mapOf("id" to ref.id,"summary" to summary)}
         "deleteProfileDocument"->{val id=identifier(d["id"]);db.document("profile_documents/$id").delete().await();audit("profile.delete",id);mapOf("ok" to true)}
         "createServerFromProfile"->{val id=identifier(d["id"]);val p=read("profile_documents/$id");check(p.exists());val summary=p.get("summary").obj();saveServer(mapOf("server" to mapOf("name" to p.getString("name").orEmpty().removeSuffix(".ovpn"),"country" to "Not verified","city" to "Not verified","flag" to "🌐","host" to summary["host"],"port" to summary["port"],"transport" to summary["transport"],"dns" to listOf("1.1.1.1","9.9.9.9"),"max_sessions" to 100,"priority" to 10,"role" to "standard","enabled" to false,"maintenance" to false,"maintenance_message" to "","ca_reference" to id,"tls_profile_reference" to "tls-crypt-v2","ipv6_policy" to "block","description" to "Imported public profile; gateway ownership and location need verification","private_notes" to "")))}
@@ -63,7 +63,37 @@ class SparkBackend(private val context:Context,private val auth:FirebaseAuth) {
         "saveAdminLayout"->{val panels=d["enabled_panels"] as? List<*>?:emptyList<Any>();require(panels.size<=8&&panels.all{it in listOf("overview","license_health","security_alerts","infrastructure","quick_actions")});val cards=d["custom_cards"].rows();validateSections(cards.map{it+mapOf("target" to "home")});db.document("configuration/admin_layout").set(mapOf("enabled_panels" to panels,"custom_cards" to cards)).await();mapOf("ok" to true)}
         "saveConfiguration"->{val s=d["settings"].obj();validateSettings(s);db.document("configuration/client").set(s).await();audit("configuration.save","client");mapOf("ok" to true)}
         "saveSocial"->{val items=d["items"].rows();require(items.size<=30);items.forEach{require(safeUrl(it.str("url"))&&it.str("name").length in 1..80&&it["enabled"] is Boolean){"Invalid link"}};db.document("configuration/social").set(mapOf("items" to items.mapIndexed{i,x->x+mapOf("order" to i)})).await();audit("social.save","social");mapOf("ok" to true)}
-        "getConfiguration"->{bound();mapOf("settings" to read("configuration/client").data.orEmpty(),"social" to (read("configuration/social").get("items")?:emptyList<Any>()),"sections" to (read("configuration/sections").get("items")?:emptyList<Any>()),"servers" to db.collection("public_servers").get(Source.SERVER).await().documents.map{normalized(it.data).obj()+mapOf("id" to it.id)})}
+        "getConfiguration"->{bound();mapOf("settings" to read("configuration/client").data.orEmpty(),"social" to (read("configuration/social").get("items")?:emptyList<Any>()),"sections" to (read("configuration/sections").get("items")?:emptyList<Any>()),"provider" to read("configuration/vpn_provider").data.orEmpty())}
+        "getAppUpdate"->mapOf("update" to normalized(read("configuration/app_update").data).obj())
+        "saveAppUpdate"->{
+            require(d["latest_version_code"] is Number&&d["minimum_version"] is Number&&d["enabled"] is Boolean&&d["required"] is Boolean){"Check update versions and switches"}
+            val update=AppUpdate.from(d);update.validate()
+            db.document("configuration/app_update").set(update.fields()+mapOf("updated_at" to FieldValue.serverTimestamp())).await()
+            audit("client.update.publish","app_update");mapOf("ok" to true)
+        }
+        "saveProviderConnectionDraft"->{
+            require(d.keys.all{it in setOf("carrier_id","base_url")}){"Only public partner connection details are accepted."}
+            val draft=ProviderConnectionDraft.parse(d.str("carrier_id"),d.str("base_url"))
+            db.document("configuration/admin_provider_request").set(draft.fields()+mapOf("saved_by" to uid,"saved_at" to FieldValue.serverTimestamp())).await()
+            audit("provider.details.save","admin_provider_request");mapOf("ok" to true,"status" to "details_saved")
+        }
+        "setVpnServicePaused"->{
+            val paused=d["paused"] as? Boolean?:error("Choose whether customer connections are allowed")
+            db.document("configuration/client").set(mapOf("maintenance" to paused),SetOptions.merge()).await()
+            audit(if(paused)"provider.pause"else "provider.resume","client");mapOf("ok" to true)
+        }
+        "saveProviderLocations"->{
+            val ref=db.document("configuration/vpn_provider")
+            val enabled=(d["enabled_locations"] as? List<*>)?.filterIsInstance<String>()?:error("Choose supported locations")
+            db.runTransaction{t->
+                val config=t.get(ref).data?:error("Connect an authorized provider first.")
+                val provider=ProviderSettings.from(config)
+                check(provider.connected){"An authorized provider and license expiry enforcement must be verified first."}
+                val supported=provider.locations.filter{it["country_code"]=="US"}.map{it["id"]}.toSet()
+                require(enabled.distinct().size==enabled.size&&enabled.all{it in supported}){"Unsupported location"}
+                t.update(ref,mapOf("enabled_locations" to enabled,"updated_at" to FieldValue.serverTimestamp()));null
+            }.await();audit("provider.locations","vpn_provider");mapOf("ok" to true)
+        }
         "saveServer"->saveServer(d)
         "manageServer"->manageServer(d)
         "importOvpn"->importOvpn(d["text"].toString())
@@ -123,11 +153,11 @@ class SparkBackend(private val context:Context,private val auth:FirebaseAuth) {
         }.await();audit("license.$action",id);return mapOf("ok" to true)
     }
     private suspend fun dashboard():Map<String,Any?> {
-        val licenses=db.collection("licenses").get(Source.SERVER).await().documents;val servers=db.collection("servers").get(Source.SERVER).await().documents
+        val licenses=db.collection("licenses").get(Source.SERVER).await().documents
+        val provider=ProviderSettings.from(read("configuration/vpn_provider").data.orEmpty())
         val counts=mutableMapOf<String,Any?>("total" to licenses.size,"recent" to licenses.count{time(it["activated_at"])?.let{v->v>System.currentTimeMillis()-7*86400000L}==true})
         for(s in listOf("active","expired","revoked","unused"))counts[s]=licenses.count{status(it.data!!)==s}
-        val fresh=servers.filter{it["health"].obj()["online"]==true&&time(it["health"].obj()["checked_at"])?.let{v->v>System.currentTimeMillis()-120000}==true}
-        counts+=mapOf("servers" to servers.size,"online" to fresh.size,"offline" to servers.size-fresh.size,"active_sessions" to fresh.sumOf{(it["health"].obj()["active_sessions"] as? Number)?.toLong()?:0},"sessions" to db.collection("sessions").whereEqualTo("revoked",false).get(Source.SERVER).await().documents.count{time(it["expires_at"])?.let{v->v>System.currentTimeMillis()}==true},"server_items" to servers.map{normalized(it.data).obj()+mapOf("id" to it.id)})
+        counts+=mapOf("provider_connected" to provider.connected,"enabled_locations" to provider.available.size)
         return counts
     }
     private suspend fun listDevices(id:String):Map<String,Any?> {
@@ -151,9 +181,7 @@ class SparkBackend(private val context:Context,private val auth:FirebaseAuth) {
         return ListenerRegistration{bindingListener.remove();licenseListener?.remove()}
     }
     private fun validateSections(items:List<Map<String,Any?>>){
-        require(items.size<=20){"Maximum 20 sections"}
-        val ids=items.map{it.str("id")};require(ids.distinct().size==ids.size)
-        items.forEach { x->require(x.str("id").matches(Regex("[A-Za-z0-9_-]{1,80}"))&&x.str("title").length in 1..80&&x.str("body").length<=3000&&x["enabled"] is Boolean&&x["target"] in listOf("home","settings")){"Invalid section"};if(x.str("url").isNotBlank())require(safeUrl(x.str("url"))){"HTTPS or support email required"} }
+        SectionPolicy.validate(items)
     }
     private fun validateSettings(s:Map<String,Any?>){
         val keys=setOf("welcome","announcement","maintenance_message","default_server","server_order","support","privacy_url","terms_url","help","activation_popup","minimum_version","update_notice","maintenance","show_social","show_tips")

@@ -1,17 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 <uses-permission android:name="android.permission.INTERNET"/><uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-<application android:name=".FavorApplication" tools:replace="android:name,android:allowBackup,android:icon,android:roundIcon,android:label,android:theme,android:supportsRtl" android:allowBackup="false" android:fullBackupContent="@xml/no_backup" android:dataExtractionRules="@xml/no_transfer" android:usesCleartextTraffic="false" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher" android:label="USA FAVOR VPN" android:theme="@style/FavorTheme" android:supportsRtl="false">
+<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+<uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+<queries><intent><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent></queries>
+<application android:name=".FavorApplication" tools:replace="android:name,android:allowBackup,android:icon,android:roundIcon,android:label,android:theme,android:supportsRtl" android:allowBackup="false" android:fullBackupContent="@xml/no_backup" android:dataExtractionRules="@xml/no_transfer" android:usesCleartextTraffic="false" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher" android:label="USA VPN" android:theme="@style/FavorTheme" android:supportsRtl="false">
 <activity android:name=".MainActivity" android:exported="true"><intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter></activity>
-<service android:name="de.blinkt.openvpn.api.ExternalOpenVPNService" android:exported="false" tools:replace="android:exported"/>
-<activity android:name="de.blinkt.openvpn.activities.NotImplemented" android:exported="false"/>
-<activity-alias android:name="de.blinkt.openvpn.activities.LogWindow" android:targetActivity="de.blinkt.openvpn.activities.NotImplemented" android:exported="false"/>
-<activity-alias android:name="de.blinkt.openvpn.activities.Req" android:targetActivity="de.blinkt.openvpn.activities.NotImplemented" android:exported="false"/>
-<activity android:name="de.blinkt.openvpn.LaunchVPN" android:exported="false" tools:replace="android:exported"/>
-<activity android:name="de.blinkt.openvpn.api.GrantPermissionsActivity" android:exported="false" tools:replace="android:exported"/>
-<activity android:name="de.blinkt.openvpn.api.ConfirmDialog" android:exported="false" tools:replace="android:exported"/>
-<receiver android:name="de.blinkt.openvpn.OnBootReceiver" android:exported="false" tools:replace="android:exported"/>
-<activity-alias android:name="de.blinkt.openvpn.api.ConnectVPN" android:exported="false" tools:replace="android:exported"/>
-<activity-alias android:name="de.blinkt.openvpn.api.DisconnectVPN" android:exported="false" tools:replace="android:exported"/>
-<activity-alias android:name="de.blinkt.openvpn.api.PauseVPN" android:exported="false" tools:replace="android:exported"/>
-<activity-alias android:name="de.blinkt.openvpn.api.ResumeVPN" android:exported="false" tools:replace="android:exported"/>
+<provider android:name="androidx.core.content.FileProvider" android:authorities="${applicationId}.updates" android:exported="false" android:grantUriPermissions="true"><meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/update_paths"/></provider>
+<activity android:name=".CodeSectionActivity" android:exported="false"/>
 </application></manifest>

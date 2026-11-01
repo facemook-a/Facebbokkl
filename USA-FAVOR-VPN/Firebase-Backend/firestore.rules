@@ -94,7 +94,35 @@ service cloud.firestore {
     match /profile_documents/{id} { allow read, write: if admin(); }
     match /servers/{id} { allow read, write: if admin(); }
     match /public_servers/{id} { allow read: if admin() || boundActive(); allow write: if admin(); }
-    match /configuration/{id} { allow read: if admin() || (id in ['client','social','sections'] && boundActive()); allow write: if admin(); }
+    match /configuration/{id} { allow read: if admin() || (id in ['client','social','sections','vpn_provider'] && boundActive()); allow write: if admin() && !(id in ['vpn_provider','app_update']); }
+    // The provider catalog and readiness are written only by a trusted integration (Admin SDK).
+    // Android administrators can toggle supported US locations, never declare their own provider ready.
+    match /configuration/vpn_provider {
+      allow update: if admin() && resource.data.integration_verified == true
+        && resource.data.expiry_enforcement_verified == true
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['enabled_locations','updated_at'])
+        && request.resource.data.enabled_locations is list
+        && request.resource.data.enabled_locations.size() <= 100
+        && request.resource.data.enabled_locations.toSet().size() == request.resource.data.enabled_locations.size()
+        && request.resource.data.enabled_locations.hasOnly(resource.data.supported_us_location_ids)
+        && request.resource.data.updated_at == request.time;
+    }
+    match /configuration/app_update {
+      // Update notices must be available before a customer activates a license.
+      allow get: if signed();
+      allow create, update: if admin()
+        && request.resource.data.keys().hasOnly(['enabled','latest_version_code','minimum_version','required','apk_url','apk_sha256','message','updated_at'])
+        && request.resource.data.enabled is bool && request.resource.data.required is bool
+        && request.resource.data.latest_version_code is int && request.resource.data.latest_version_code >= 1 && request.resource.data.latest_version_code <= 2100000000
+        && request.resource.data.minimum_version is int && request.resource.data.minimum_version >= 1 && request.resource.data.minimum_version <= request.resource.data.latest_version_code
+        && request.resource.data.message is string && request.resource.data.message.size() <= 2000
+        && request.resource.data.apk_url is string && request.resource.data.apk_url.size() <= 4000
+        && request.resource.data.apk_sha256 is string
+        && (!request.resource.data.enabled || (request.resource.data.apk_url.matches('https://.+') && request.resource.data.apk_sha256.matches('[a-fA-F0-9]{64}')))
+        && request.resource.data.updated_at == request.time;
+      allow delete: if admin();
+    }
+    match /provider_grants/{id} { allow read, write: if false; }
     match /audit/{id} {
       allow read: if admin();
       allow create: if admin() && request.resource.data.keys().hasOnly(['actor','action','target','at'])

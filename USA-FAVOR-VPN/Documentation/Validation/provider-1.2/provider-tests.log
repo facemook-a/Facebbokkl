@@ -1,0 +1,21 @@
+
+> test
+> node --test test/*.test.js
+
+✔ real callable rejects unauthenticated and malformed location requests before database access (1.110223ms)
+✔ real provider callback rejects wrong method and missing authentication (39.975326ms)
+✔ real provider callback rejects malformed grants even with valid callback authentication (9.175429ms)
+✔ real provider callback refuses service when callback secret is not configured (3.084925ms)
+✔ grant expires within 60 seconds and never beyond the paid expiry (0.801866ms)
+✔ another device, revoked, expired, deleted and malformed licenses fail closed (0.47982ms)
+✔ missing provider, unverified expiry enforcement and disabled locations fail closed (0.295788ms)
+✔ reset and renewal preserve original paid anchor unless explicit expiry is extended (0.20257ms)
+✔ callback secret comparison rejects absent and mismatched credentials (0.870498ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 501.127463

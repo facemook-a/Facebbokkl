@@ -4,7 +4,7 @@ if (file("google-services.json").exists()) apply(plugin="com.google.gms.google-s
 android {
  ndkVersion="28.0.13004108"
  namespace="com.b5studios.usafavor"; compileSdk=35
- defaultConfig { applicationId="com.b5studios.usafavor"; minSdk=26; targetSdk=35; versionCode=2; versionName="1.1.0-spark" }
+ defaultConfig { applicationId="com.b5studios.usafavor"; minSdk=26; targetSdk=35; versionCode=5; versionName="1.3.0-studio" }
  signingConfigs { create("production") {
   System.getenv("B5_KEYSTORE_FILE")?.let { storeFile=file(it) }
   storePassword=System.getenv("B5_KEYSTORE_PASSWORD")
@@ -20,7 +20,7 @@ android {
  kotlinOptions { jvmTarget="17" }
  packaging { resources.excludes += setOf("META-INF/AL2.0", "META-INF/LGPL2.1"); jniLibs.useLegacyPackaging=true }
 }
-dependencies { implementation(project(":Shared")) }
+dependencies { implementation(project(":Shared")); implementation("androidx.biometric:biometric:1.1.0") }
 
 val validateProduction by tasks.registering {
  doLast {

@@ -1,0 +1,5 @@
+{
+  "schema_version": 1,
+  "kind": "provider",
+  "payload": {"provider": "aura", "carrier_id": "REPLACE_WITH_PUBLIC_PARTNER_ID", "base_url": "https://partner.example.com/"}
+}

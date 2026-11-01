@@ -1,3 +1,23 @@
+# Studio 1.3 security additions
+
+Owner biometric/device authentication unlocks only an existing authorized Firebase owner session. First login and all server/rule administrator claims remain enforced; no public signup or self-granted owner role was added.
+
+Remote code tools run in a non-exported WebView Activity with CSP, network/file/content/storage access disabled and no native/credential bridge. Code/JSON packages cannot load dex/so/APK modules or declare VPN readiness. Remote native actions call existing permission-checked app flows.
+
+The APK updater checks HTTPS, size, digest, package, exact higher version and the current signing certificate, then opens Android's user-confirmed installer through a narrowly scoped private-cache FileProvider. It does not silently install or promise forced relaunch. Public update manifests can be read by signed installations before license activation; clients cannot publish them.
+
+Real-device biometric, code-tool and APK-installation acceptance remains unperformed. Live Firebase deployment, a supported partner SDK and server-enforced VPN entitlement are still external prerequisites. See STUDIO.md and current VERIFICATION.md; prior sections below are historical context.
+
+# Provider release security additions
+
+Version 1.2.0-provider keeps the one-installation Spark schema and default-deny rules. Provider grants are inaccessible to Android clients, including Android admins. Public partner configuration contains no master secrets; Android administrators can toggle only trusted integration-supplied USA location IDs. Trusted Admin SDK integration owns catalog/readiness publication.
+
+The optional managed Functions bridge checks current paid expiry and device binding at grant issue and consumption. Random grants are single-use, stored only as hashes and expire within 60 seconds or the paid expiry. App Check is enforced on issuance; the callback requires a Secret Manager-backed Bearer secret and never logs tokens. No authorized provider secret was supplied or deployed here.
+
+The optional SDK adapter is not verified against a supplied SDK binary. No live service can be enabled until a supported authorized partner SDK/account and provider-enforced expiry/revocation have passed acceptance. The basic OAuth response metadata does not prove active-session termination. Client listeners/polling are additional protection, not authority after process death. See PROVIDER-SETUP.md for required partner contract behavior and unresolved integration work.
+
+The following older gateway/engine notes describe retained **legacy** source, not the default provider Client. No old APK result certifies this version.
+
 # Security boundaries — Spark release
 
 - Administrator rights require Firebase Auth admin:true and are enforced by Firestore rules and the trusted gateway. No public role-grant/self-registration feature exists. The app itself is not the authority.

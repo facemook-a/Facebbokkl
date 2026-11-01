@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "kind": "sections",
+  "payload": {
+    "items": [{
+      "id": "calculator", "title": "Calculator", "body": "A private local calculator", "target": "home", "enabled": true,
+      "kind": "code", "button_label": "OPEN CALCULATOR", "icon": "info",
+      "html": "<h2>Calculator</h2><input id='a' type='number' placeholder='First number'><input id='b' type='number' placeholder='Second number'><button onclick='run()'>Add</button><p id='out'></p>",
+      "css": "input,button{display:block;padding:12px;margin:10px 0;border-radius:10px}h2{color:#6ce5b1}",
+      "javascript": "function run(){document.getElementById('out').textContent=Number(document.getElementById('a').value)+Number(document.getElementById('b').value);}",
+      "url": ""
+    }]
+  }
+}

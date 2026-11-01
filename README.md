@@ -1,19 +1,23 @@
-# USA FAVOR VPN — B5 STUDIOS
+# USA VPN / B5 STUDIOS ADMIN
 
-Version **1.1.0-spark**: two native Android apps with free Firestore licensing, an English Client interface, original adaptive icons and animated Compose design.
+Native Android project on branch **usa-favor-vpn**, in [USA-FAVOR-VPN/](USA-FAVOR-VPN/).
 
-- [USA-Admin.apk — Debug test build](USA-FAVOR-VPN/Downloads/USA-Admin.apk)
-- [USA-Favor.apk — ARM64 Debug test build](USA-FAVOR-VPN/Downloads/USA-Favor.apk)
-- [Optional x86_64 Client APK](USA-FAVOR-VPN/Downloads/USA-Favor-x86_64.apk)
-- [Complete source ZIP with matching Firebase Android registrations](USA-FAVOR-VPN/Downloads/USA-FAVOR-VPN-source.zip)
-- [Free setup — شرح بالدارجة خطوة بخطوة](USA-FAVOR-VPN/Documentation/FREE-SETUP.md)
-- [Source and deployment documentation](USA-FAVOR-VPN/README.md)
-- [Actual native screen previews](USA-FAVOR-VPN/Documentation/Screenshots/README.md)
-- [Actual verification results](USA-FAVOR-VPN/Documentation/VERIFICATION.md)
-- [SHA-256 checksums](USA-FAVOR-VPN/Downloads/SHA256SUMS.txt)
+## Current test downloads — 1.3.0-studio
 
-The default license workflow needs Firebase Spark, a Standard Native(default) Firestore database with the supplied rules, admin:true authorization and Anonymous Auth for Client. It does not require Cloud Functions or billing, within free quotas. One code binds to one installation; another installation is refused and can be reviewed/banned by Admin.
+- [USA VPN client APK](USA-FAVOR-VPN/Downloads/1.3.0-studio/USA-VPN.apk)
+- [B5 STUDIOS Admin APK](USA-FAVOR-VPN/Downloads/1.3.0-studio/USA-Admin.apk)
+- [Checksums and optional x86_64 client](USA-FAVOR-VPN/Downloads/1.3.0-studio/)
+- [Current verification](USA-FAVOR-VPN/Documentation/VERIFICATION.md)
+- [Admin sections, code tools, packages and updates](USA-FAVOR-VPN/Documentation/STUDIO.md)
 
-Both APKs compile and pass lint. Sixteen real Firestore-emulator security cases, nine isolated gateway tests and two native component-rendering tests passed. These are debug-signed test APKs; no real VPS tunnel, deployed Firebase setup or production signing was verified here. The legacy uploaded third-party OVPN profile does not prove gateway control and is not bundled. See the verification report for exact scope and remaining setup.
+The Client launcher label is USA VPN. One unused code can activate on any customer's installation, then binds to that first installation and retains access until its original expiry. Subsequent disconnect/reconnect does not consume another code. Admin supports Arabic/English, RTL, saved-owner biometric/device unlock, license management, remote sections/HTML tools, JSON package import, update notices and Android's user-confirmed installer.
 
-No VPS, service-account, issuer or production-signing private keys are supplied. Local Firebase Android registrations are excluded from Git and included in the source archive. Preserve OpenVPN's corresponding source and license notices on distribution.
+**These are Debug test builds.** Live Firebase deployment and actual customer activation are unverified. No authorized provider account/supported VPN SDK is supplied; real VPN remains unavailable. Owner authentication cannot be self-granted by the APK, and a new native provider SDK cannot be added through remote settings alone. Updates need a matching signing key.
+
+### Actual native Compose renders
+
+| Client | Arabic Admin |
+|---|---|
+| ![Client disconnected](USA-FAVOR-VPN/Downloads/1.3.0-studio/Previews/client-home.png) | ![Arabic Admin](USA-FAVOR-VPN/Downloads/1.3.0-studio/Previews/admin-arabic.png) |
+
+These are software UI renders, not physical-device or live tunnel evidence. The earlier [generated visual proposal](USA-FAVOR-VPN/Assets/Design-Concepts/B5-STUDIOS-VPN-Concept.png) is a concept image.

@@ -19,6 +19,7 @@ dependencies {
  api("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.10.1")
  api(platform("com.google.firebase:firebase-bom:33.10.0"))
  api("com.google.firebase:firebase-auth")
+ api("com.google.firebase:firebase-functions")
  api("com.google.firebase:firebase-firestore")
  api("com.google.firebase:firebase-appcheck-playintegrity")
  debugApi("com.google.firebase:firebase-appcheck-debug")

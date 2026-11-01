@@ -1,22 +1,18 @@
 # USA FAVOR VPN — B5 STUDIOS
 
-Two independent native Kotlin/Compose Android applications, a **Firebase Spark licensing system without Cloud Functions**, and deployable OpenVPN gateway source. Version 1.1.0-spark uses live Firestore rules for license authorization; no billing account is required for the license workflow within Spark quotas. VPS hosting is separate.
+Version 1.3.0-studio simplifies the existing Kotlin/Compose applications around a managed VPN provider. Package names remain **com.b5studios.usafavor** (Admin) and **com.usafavor.client** (Client). The original B5 branding, shield, Cairo font, licensing, remote announcements, social links and custom sections remain; the Client adds green illuminated controls and optional per-app routing.
 
-| Folder | Purpose |
-|---|---|
-| Admin-App/app | B5 STUDIOS ADMIN · com.b5studios.usafavor |
-| Client-App/app | USA FAVOR VPN · com.usafavor.client · English interface |
-| Shared | Native design, cryptographic license generator, Firestore repository and Keystore metadata |
-| Firebase-Backend | Spark rules, emulator integration tests; optional legacy Functions source |
-| VPN-Gateway | Ubuntu OpenVPN deployment, per-session credentials and trusted license enforcement |
-| Assets | Original app icons, design resources, Cairo font and third-party notices |
-| Documentation | Free setup, build, security and actual validation results |
-| OpenVPN-Core | Vendored OpenVPN for Android v0.7.69 and native implementation sources |
+Start with [PROVIDER-SETUP.md](Documentation/PROVIDER-SETUP.md). No authorized partner credentials or current SDK artifact are supplied: the default apps clearly show **Provider not connected**. They never simulate tunnels or USA IP addresses. The integration layer targets Aura's documented Partner Android SDK/custom OAuth route; a supported partner SDK, reseller authorization and verified provider-side expiry/revocation enforcement are required before live use.
 
-Download the test APKs in [Downloads](Downloads/). Start with [FREE-SETUP.md](Documentation/FREE-SETUP.md) to create the free database, publish the supplied rules and enable anonymous Client authentication. Your existing administrator claim remains necessary. A previous Functions-backed release is not compatible with this new schema without migration; do not deploy the legacy Functions configuration against the Spark schema.
+Admin: Login → Generate Code → Manage Licenses → VPN Connection Settings.
 
-The Admin generates random USA-XXXX-XXXX codes, sets generation/first-activation durations, manages licenses and bindings, shows rejected second-installation attempts, and controls remote content, recognizable social links, dashboard sections and verified gateway inventory. The Client has an English interface, original shield art, animated native controls and Keystore-protected tunnel profiles. Every authorization still depends on Firestore rules and, for VPN use, the trusted gateway.
+Client: Activate Code → Select Apps (optional) → Connect USA VPN.
 
-Ordinary compatible server and content changes arrive remotely. Adding a record or importing a profile does not provision or take control of a server. The uploaded legacy OpenVPN profile contains a shared private key and obsolete encryption; it is not bundled or treated as proof of ownership. A compatible gateway must be deployed or adapted by its authorized operator. See [GATEWAY.md](Documentation/GATEWAY.md).
+Firebase Spark still handles one-installation licensing and remote content without Functions. The optional provider authorization bridge uses managed Firebase Functions (billing may be required); it is separately configured and not silently deployed. See [FREE-SETUP.md](Documentation/FREE-SETUP.md), [BUILD.md](Documentation/BUILD.md), [SECURITY.md](Documentation/SECURITY.md) and [VERIFICATION.md](Documentation/VERIFICATION.md).
 
-[BUILD.md](Documentation/BUILD.md) describes reproducible Android builds; [VERIFICATION.md](Documentation/VERIFICATION.md) records actual results. The delivered APKs are debug-signed test builds. No live VPS tunnel, deployed project rules, or production signing credentials were available for verification in this environment. See [SECURITY.md](Documentation/SECURITY.md) for quotas, binding limitations and operational boundaries. Preserve the corresponding OpenVPN source and license notices when distributing the client.
+Existing `OpenVPN-Core`, `VPN-Gateway`, legacy Functions and old `Downloads` are retained, but are not the default service or current build evidence. New test APKs and checksums are written to `artifacts/`. Debug signatures are for testing; production signing and device/Firebase/provider acceptance remain separate.
+
+
+The Client launcher label is **USA VPN**, while its application ID remains com.usafavor.client. Admin now has an Arabic/English RTL-aware interface, side navigation, owner-session unlock using the phone's biometric/device credential, a section/action builder, isolated HTML/CSS/JavaScript tools, JSON package import and update notices/downloads. See [STUDIO.md](Documentation/STUDIO.md).
+
+Codes are generated by Admin, redeemable by any installation possessing an unused valid code, and atomically bound to the first installation. That installation restores access until the original expiry without typing the code again. Device disconnect/reconnect does not consume another code. First-time Admin sign-in still requires an authorized owner account; the phone unlock cannot grant an administrator role. Live Firebase deployment and provider activation have not been performed here.
