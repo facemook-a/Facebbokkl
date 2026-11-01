@@ -3,6 +3,7 @@
 - [USA VPN client, ARM64](USA-VPN.apk)
 - [B5 STUDIOS Admin](USA-Admin.apk)
 - [Client x86_64, optional emulator](USA-VPN-x86_64.apk)
+- [Complete project/APK ZIP](USA-FAVOR-Complete.zip)
 - [SHA-256 checksums](SHA256SUMS.txt)
 - [Native Compose review images](Previews/)
 

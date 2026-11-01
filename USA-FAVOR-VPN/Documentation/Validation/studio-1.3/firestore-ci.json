@@ -1,0 +1,14 @@
+{
+  "workflow": "Spark license security",
+  "run_id": 41332145781,
+  "job_id": 124924305380,
+  "url": "https://github.com/facemook-a/Facebbokkl/actions/runs/41332145781",
+  "tested_commit": "c11031de71b2449b83dd0c52fa8680b289042789",
+  "rules_sha256": "edd368805da5f0974f8ba9242cca087aaaedf0e3798042a915b459001631551e",
+  "conclusion": "success",
+  "tests": 26,
+  "passed": 26,
+  "failed": 0,
+  "evidence": "Public GitHub Actions workflow state COMPLETED/SUCCESS and Spark suite result annotation: ℹ tests 26 | ℹ pass 26 | ℹ fail 0",
+  "scope": "Official Firestore emulator, not a live deployed Firebase project or VPN gateway"
+}

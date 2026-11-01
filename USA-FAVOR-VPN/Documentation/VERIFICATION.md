@@ -8,7 +8,7 @@
 | Debug APK build | Both Kotlin/Compose applications built with the checksum-pinned Gradle wrapper; current build log in Validation/studio-1.3 |
 | Lint | Both apps: zero errors and zero warnings in final Android Lint reports |
 | Activation | First valid unused code binds atomically to one anonymous installation; subsequent restoration preserves original expiry. Current live Firebase activation not verified |
-| Firestore tests | 26 defined; execution remains blocked by the official emulator download network policy. Historical CI results below do not certify these new rules |
+| Firestore tests | **26 passed, 0 failed** on the official emulator in [GitHub Actions run 41332145781](https://github.com/facemook-a/Facebbokkl/actions/runs/41332145781), tested commit c11031d. Local emulator download remains network-blocked; exact tested rules SHA-256 is recorded in Validation/studio-1.3/firestore-ci.json |
 | Arabic and owner unlock | Arabic/English preference, RTL and biometric/device-credential unlock of an already authorized owner session implemented; sensor/system-auth acceptance on a physical phone remains untested |
 | Sections and packages | Native actions, isolated HTML/CSS/JS tools and validated JSON import implemented; real-device WebView execution not exercised by Compose snapshots |
 | Updates | In-app HTTPS download, bounded redirects/size, SHA-256, package/version/current signing-key checks and user-confirmed Android installer implemented; physical installation/relaunch not tested |
